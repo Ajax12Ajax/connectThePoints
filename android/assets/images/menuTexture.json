@@ -1,0 +1,10 @@
+{
+  com.badlogic.gdx.graphics.g2d.BitmapFont: { default-font: { file: pixelFont.fnt } },
+  com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
+    pauseButton: { down: pauseButton-dn, up: pauseButton-up }
+    play: { down: play-dn, up: play-up },
+  },
+  com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+    default: { font: default-font}
+  }
+}

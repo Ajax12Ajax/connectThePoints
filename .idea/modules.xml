@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/connectThePoints.iml" filepath="$PROJECT_DIR$/.idea/modules/connectThePoints.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android/connectThePoints.android.iml" filepath="$PROJECT_DIR$/.idea/modules/android/connectThePoints.android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/connectThePoints.core.iml" filepath="$PROJECT_DIR$/.idea/modules/core/connectThePoints.core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/desktop/connectThePoints.desktop.iml" filepath="$PROJECT_DIR$/.idea/modules/desktop/connectThePoints.desktop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ios/connectThePoints.ios.iml" filepath="$PROJECT_DIR$/.idea/modules/ios/connectThePoints.ios.iml" />
+    </modules>
+  </component>
+</project>
