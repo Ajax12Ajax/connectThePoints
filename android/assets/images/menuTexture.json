@@ -1,10 +1,19 @@
 {
   com.badlogic.gdx.graphics.g2d.BitmapFont: { default-font: { file: pixelFont.fnt } },
+  com.badlogic.gdx.graphics.Color: {
+    green: { a: 1, b: 0, g: 1, r: 0 },
+    white: { a: 1, b: 1, g: 1, r: 1 },
+    red: { a: 1, b: 0, g: 0, r: 1 },
+    black: { a: 1, b: 0, g: 0, r: 0 }
+  },
   com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
-    pauseButton: { down: pauseButton-dn, up: pauseButton-up }
+    pauseButton: { down: field-up-purple, up: field-up-purple }
     play: { down: play-dn, up: play-up },
   },
   com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
     default: { font: default-font}
   }
+  com.badlogic.gdx.scenes.scene2d.ui.Image: {
+    background: { drawable: background }
+  },
 }

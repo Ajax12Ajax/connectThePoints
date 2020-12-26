@@ -9,18 +9,22 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.mygdx.gragdx.screens.level.Level1;
 import com.mygdx.gragdx.util.Constants;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class MainScreen extends AbstractGameScreen {
+    private static final String TAG = MainScreen.class.getName();
+
     private final Stage backgroundStage = new Stage(new FillViewport(516, 684));
     private final Stage stage = new Stage(new ExtendViewport(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT));
     private final Stage menuStage = new Stage(new ExtendViewport(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT));
@@ -33,7 +37,10 @@ public class MainScreen extends AbstractGameScreen {
 
     private MenuScreen menuScreen;
 
-    float Y = 4;
+    Image background;
+    int timer = 0;
+
+    Level1 level1;
 
 
     public MainScreen(Game game) {
@@ -43,6 +50,7 @@ public class MainScreen extends AbstractGameScreen {
 
     private void setupUi() {
         menuScreen = new MenuScreen();
+        level1 = new Level1();
 
         skin = new Skin(
                 Gdx.files.internal(Constants.SKIN_HUD_UI),
@@ -50,9 +58,9 @@ public class MainScreen extends AbstractGameScreen {
 
         setupBackground();
 
-        //setupGame();
+        setupGame();
 
-        //add Menu
+        //add menu
         menuScreen.menuButtons(skin, menuStage, backgroundStage).addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -64,33 +72,28 @@ public class MainScreen extends AbstractGameScreen {
 
 
     private void setupBackground() {
-        //Image image = new Image(skin, "backgroundStart");
-        //backgroundUi.addActor(image);
+        background = new Image(skin, "background");
+        backgroundStage.addActor(background);
     }
 
-    //public void setupGame() {
-    //    Table table = new Table();
-    //    table.setFillParent(true);
-    //    table.center();
-//
-    //    for (int pixelY = 0; pixelY < Y; pixelY++) {
-    //        //Button gameButton = new Button(skin, "pauseButton");
-    //        if (pixelY <= 4) {
-    //            pixelY = 0;
-    //            //gameButton.row();
-    //            }
-    //        //table.add(gameButton);
-    //    }
-//
-    //    stage.addActor(table);
-    //}
+    public Table setupGame() {
+        Table table = new Table();
+        table.setFillParent(true);
+        table.center();
+
+        level1.addLevel(table);
+
+        stage.addActor(table);
+        return table;
+    }
+
 
     public void setupTimer() {
         Table timerTable = new Table();
         timerTable.setFillParent(true);
         timerTable.top();
 
-        timerText = new Label("2137", skin);
+        timerText = new Label(String.valueOf(timer), skin);
         timerText.setFontScale(1.5f);
         timerTable.add(timerText).padTop(20);
 
@@ -120,7 +123,7 @@ public class MainScreen extends AbstractGameScreen {
 
     @Override
     public void render(float deltaTime) {
-        Gdx.gl.glClearColor(0.706f, 0.851f, 0.847f, 1);
+        Gdx.gl.glClearColor(0.406f, 0.010f, 0.999f, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
 
         if (Gdx.input.isButtonJustPressed(0)) {
@@ -134,6 +137,13 @@ public class MainScreen extends AbstractGameScreen {
         drawStage(backgroundStage, deltaTime);
         drawStage(stage, deltaTime);
         drawStage(menuStage, deltaTime);
+
+        level1.level();
+
+        if (menuScreen.r) {
+            timerText.setText(String.valueOf(timer));
+            timer++;
+        }
     }
 
     private void drawStage(Stage stage, Float deltaTime) {

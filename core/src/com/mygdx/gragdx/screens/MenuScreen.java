@@ -18,6 +18,8 @@ import java.util.Set;
 public class MenuScreen {
     private final Set<Action> animationActions = new HashSet<Action>();
 
+    public Boolean r = false;
+
     Button buttonStart;
     Button buttonTools;
     Button buttonCustomization;
@@ -25,12 +27,12 @@ public class MenuScreen {
     public Button menuButtons(Skin skin, Stage stage, Stage backgroundStage) {
         Gdx.input.setInputProcessor(stage);
 
-        final Image image = new Image(skin, "backgroundr");
+        final Image image = new Image(skin, "backgroundTools");
         backgroundStage.addActor(image);
+
 
         Table menuTable = new Table();
         menuTable.setFillParent(true);
-
         menuTable.center();
 
         buttonStart = new Button(skin, "play");
@@ -42,6 +44,7 @@ public class MenuScreen {
                 buttonTools.setVisible(false);
                 buttonCustomization.setVisible(false);
                 image.setVisible(false);
+                r = true;
             }
         });
         buttonAction(buttonStart);
