@@ -101,6 +101,7 @@ public class Level1 {
 
                             if (field.getStartingField(i)) {
                                 field.setCheck(i, image[i], true, field.getColor(i));
+                                field.setConnected(i, field.getColor(i));
                             }
 
                         } else if (field.getCheck(i, field.getColor(last))) {
@@ -116,6 +117,9 @@ public class Level1 {
                             if (field.getStartingField(last)) {
                                 field.setCheck(last, image[last], true, field.getColor(i));
                             }
+                            if (field.getStartingField(i)) {
+                                field.setConnected(i, field.getColor(i))
+                            }
                         }
                         last = i;
 
@@ -128,10 +132,10 @@ public class Level1 {
         if (!test) {
             for (int i = 0; i < 16; i++) {
                 if (!field.getStartingField(i)) {
-                    field.setCheck(i, image[i], false, "Check1");
-                    field.setCheck(i, image[i], false, "Check2");
-                    field.setCheck(i, image[i], false, "Check3");
-                    field.setCheck(i, image[i], false, "Check4");
+                    if (field.getConnected(field.getColor(i))) {field.setCheck(i, image[i], false, "Check1");}
+                    if (field.getConnected(field.getColor(i))) {field.setCheck(i, image[i], false, "Check2");}
+                    if (field.getConnected(field.getColor(i))) {field.setCheck(i, image[i], false, "Check3");}
+                    if (field.getConnected(field.getColor(i))) {field.setCheck(i, image[i], false, "Check4");}
                     image[i].setDrawable(skin, "field-dn");
                 }
             }
