@@ -14,6 +14,15 @@ public class Field {
     Boolean[] Check3 = new Boolean[17];
     Boolean[] Check4 = new Boolean[17];
 
+    Boolean[] Connected1 = new Boolean[2];
+    Boolean[] Connected2 = new Boolean[2];
+    Boolean[] Connected3 = new Boolean[2];
+    Boolean[] Connected4 = new Boolean[2];
+    int i1 = 1;
+    int i2 = 1;
+    int i3 = 1;
+    int i4 = 1;
+
     public Field() {
         skin = new Skin(new TextureAtlas(Constants.TEXTURE_ATLAS_HUD_UI));
 
@@ -83,5 +92,63 @@ public class Field {
 
     public Boolean getStartingField(int i) {
         return startingField[i];
+    }
+
+    public void setConnected(int i, String Check) {
+        if (getStartingField(i)) {
+            if (Check == "Check1") {
+                if (i1 == 3) {
+                    i1 = 1;
+                }
+                Connected1[i1] = true;
+                i1++;
+            }
+            if (Check == "Check2") {
+                if (i2 == 3) {
+                    i2 = 1;
+                }
+                Connected1[i2] = true;
+                i2++;
+            }
+            if (Check == "Check3") {
+                if (i3 == 3) {
+                    i3 = 1;
+                }
+                Connected1[i3] = true;
+                i3++;
+            }
+            if (Check == "Check4") {
+                if (i4 == 3) {
+                    i4 = 1;
+                }
+                Connected1[i4] = true;
+                i4++;
+            }
+        }
+    }
+
+    public Boolean getConnected(String Check) {
+        Boolean Connected = false;
+        if (Check == "Check1") {
+            if (Connected1[1] && Connected1[2]) {
+                Connected = true;
+            } else {Connected = false;}
+        }
+        if (Check == "Check2") {
+            if (Connected2[1] && Connected2[2]) {
+                Connected = true;
+            } else {Connected = false;}
+        }
+        if (Check == "Check3") {
+            if (Connected3[1] && Connected3[2]) {
+                Connected = true;
+            } else {Connected = false;}
+        }
+        if (Check == "Check4") {
+            if (Connected4[1] && Connected4[2]) {
+                Connected = true;
+            } else {Connected = false;}
+        }
+        return Connected;
     }
 }
