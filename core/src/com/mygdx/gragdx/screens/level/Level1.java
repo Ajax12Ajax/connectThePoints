@@ -95,7 +95,6 @@ public class Level1 {
                 Vector2 mouseLocalPosition = image[i].screenToLocalCoordinates(mouseScreenPosition);
                 if (image[i].hit(mouseLocalPosition.x, mouseLocalPosition.y, false) != null) {
                     if (last != i) {
-
                         if (!field.getCheck(i, field.getColor(last))) {
                             field.setCheck(i, image[i], true, field.getColor(last));
 
@@ -126,7 +125,7 @@ public class Level1 {
                     }
                 }
                 if (field.getConnected(field.getColor(0))) {
-                    field.setCheck(0, image[0], true, field.getColor(0));
+                   field.setCheck(0, image[0], true, field.getColor(0));
                 }
             }
         }
