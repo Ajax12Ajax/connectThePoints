@@ -14,14 +14,14 @@ public class Field {
     Boolean[] Check3 = new Boolean[17];
     Boolean[] Check4 = new Boolean[17];
 
-    Boolean[] Connected1 = new Boolean[2];
-    Boolean[] Connected2 = new Boolean[2];
-    Boolean[] Connected3 = new Boolean[2];
-    Boolean[] Connected4 = new Boolean[2];
-    int i1 = 1;
-    int i2 = 1;
-    int i3 = 1;
-    int i4 = 1;
+    Boolean[] Connected1 = new Boolean[3];
+    Boolean[] Connected2 = new Boolean[3];
+    Boolean[] Connected3 = new Boolean[3];
+    Boolean[] Connected4 = new Boolean[3];
+    public int i1 = 1;
+    public int i2 = 1;
+    public int i3 = 1;
+    public int i4 = 1;
 
     public Field() {
         skin = new Skin(new TextureAtlas(Constants.TEXTURE_ATLAS_HUD_UI));
@@ -32,6 +32,13 @@ public class Field {
             Check2[i] = false;
             Check3[i] = false;
             Check4[i] = false;
+        }
+
+        for (int i = 0; i < 3; i++) {
+            Connected1[i] = false;
+            Connected2[i] = false;
+            Connected3[i] = false;
+            Connected4[i] = false;
         }
     }
 
@@ -107,21 +114,21 @@ public class Field {
                 if (i2 == 3) {
                     i2 = 1;
                 }
-                Connected1[i2] = true;
+                Connected2[i2] = true;
                 i2++;
             }
             if (Check == "Check3") {
                 if (i3 == 3) {
                     i3 = 1;
                 }
-                Connected1[i3] = true;
+                Connected3[i3] = true;
                 i3++;
             }
             if (Check == "Check4") {
                 if (i4 == 3) {
                     i4 = 1;
                 }
-                Connected1[i4] = true;
+                Connected4[i4] = true;
                 i4++;
             }
         }
