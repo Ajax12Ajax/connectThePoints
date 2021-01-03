@@ -3,9 +3,11 @@ package com.mygdx.gragdx.screens.level;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.mygdx.gragdx.screens.MainScreen;
 import com.mygdx.gragdx.util.Constants;
 
 public class Field {
+    private static final String TAG = MainScreen.class.getName();
     private Skin skin;
 
     Boolean[] startingField = new Boolean[17];
@@ -46,13 +48,13 @@ public class Field {
         if (Check == "Check1") {
             Check1[i] = check;
             image.setDrawable(skin, "field-up-blue");
-        }else if (Check == "Check2") {
+        } else if (Check == "Check2") {
             Check2[i] = check;
             image.setDrawable(skin, "field-up-red");
-        }else if (Check == "Check3") {
+        } else if (Check == "Check3") {
             Check3[i] = check;
             image.setDrawable(skin, "field-up-purple");
-        }else if (Check == "Check4") {
+        } else if (Check == "Check4") {
             Check4[i] = check;
             image.setDrawable(skin, "field-up-green");
         }
@@ -62,7 +64,7 @@ public class Field {
         Boolean[] check = new Boolean[17];
         check[i] = Check1[i];
         if (Check == "Check1") {
-            check[i] =  Check1[i];
+            check[i] = Check1[i];
         }
         if (Check == "Check2") {
             check[i] = Check2[i];
@@ -84,7 +86,7 @@ public class Field {
         if (Check2[i]) {
             check = "Check2";
         }
-        if (Check3[i]){
+        if (Check3[i]) {
             check = "Check3";
         }
         if (Check4[i]) {
@@ -101,35 +103,76 @@ public class Field {
         return startingField[i];
     }
 
-    public void setConnected(int i, String Check) {
-        if (getStartingField(i)) {
-            if (Check == "Check1") {
-                if (i1 == 3) {
-                    i1 = 1;
+    public void setConnected(int i, String Check, Boolean check) {
+        if (check) {
+            if (getStartingField(i)) {
+                if (Check == "Check1") {
+                    if (i1 == 3) {
+                        i1 = 1;
+                    }
+                    Connected1[i1] = true;
+                    i1++;
                 }
-                Connected1[i1] = true;
-                i1++;
+                if (Check == "Check2") {
+                    if (i2 == 3) {
+                        i2 = 1;
+                    }
+                    Connected2[i2] = true;
+                    i2++;
+                }
+                if (Check == "Check3") {
+                    if (i3 == 3) {
+                        i3 = 1;
+                    }
+                    Connected3[i3] = true;
+                    i3++;
+                }
+                if (Check == "Check4") {
+                    if (i4 == 3) {
+                        i4 = 1;
+                    }
+                    Connected4[i4] = true;
+                    i4++;
+                }
             }
-            if (Check == "Check2") {
-                if (i2 == 3) {
-                    i2 = 1;
+        } else if (!check) {
+            if (getStartingField(i)) {
+                if (Check == "Check1") {
+                    if (i1 == 2) {
+                        i1 = 1;
+                    }
+                    if (i1 == 3) {
+                        i1 = 2;
+                    }
+                    Connected1[i1] = false;
                 }
-                Connected2[i2] = true;
-                i2++;
-            }
-            if (Check == "Check3") {
-                if (i3 == 3) {
-                    i3 = 1;
+                if (Check == "Check2") {
+                    if (i2 == 2) {
+                        i2 = 1;
+                    }
+                    if (i2 == 3) {
+                        i2 = 2;
+                    }
+                    Connected2[i2] = false;
                 }
-                Connected3[i3] = true;
-                i3++;
-            }
-            if (Check == "Check4") {
-                if (i4 == 3) {
-                    i4 = 1;
+                if (Check == "Check3") {
+                    if (i3 == 2) {
+                        i3 = 1;
+                    }
+                    if (i3 == 3) {
+                        i3 = 2;
+                    }
+                    Connected3[i3] = false;
                 }
-                Connected4[i4] = true;
-                i4++;
+                if (Check == "Check4") {
+                    if (i4 == 2) {
+                        i4 = 1;
+                    }
+                    if (i4 == 3) {
+                        i4 = 2;
+                    }
+                    Connected4[i4] = false;
+                }
             }
         }
     }
@@ -139,22 +182,30 @@ public class Field {
         if (Check == "Check1") {
             if (Connected1[1] && Connected1[2]) {
                 Connected = true;
-            } else {Connected = false;}
+            } else {
+                Connected = false;
+            }
         }
         if (Check == "Check2") {
             if (Connected2[1] && Connected2[2]) {
                 Connected = true;
-            } else {Connected = false;}
+            } else {
+                Connected = false;
+            }
         }
         if (Check == "Check3") {
             if (Connected3[1] && Connected3[2]) {
                 Connected = true;
-            } else {Connected = false;}
+            } else {
+                Connected = false;
+            }
         }
         if (Check == "Check4") {
             if (Connected4[1] && Connected4[2]) {
                 Connected = true;
-            } else {Connected = false;}
+            } else {
+                Connected = false;
+            }
         }
         return Connected;
     }

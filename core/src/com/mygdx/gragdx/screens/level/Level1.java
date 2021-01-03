@@ -81,7 +81,7 @@ public class Level1 {
             }
         } else {
             test = false;
-            for (int i = 0; i < 2; i++) {
+            for (int i = 0; i < 3; i++) {
                 start1[i] = 0;
             }
             start2 = 1;
@@ -100,7 +100,9 @@ public class Level1 {
 
                             if (field.getStartingField(i)) {
                                 field.setCheck(i, image[i], true, field.getColor(i));
-                                field.setConnected(i, field.getColor(i));
+                                if (start1[1] != start1[2]) {
+                                    field.setConnected(i, field.getColor(i), true);
+                                }
                             }
 
                         } else if (field.getCheck(i, field.getColor(last))) {
@@ -115,18 +117,23 @@ public class Level1 {
                             }
                             if (field.getStartingField(last)) {
                                 field.setCheck(last, image[last], true, field.getColor(i));
+                                field.setConnected(last, field.getColor(last), false);
                             }
                             if (field.getStartingField(i)) {
-                                field.setConnected(i, field.getColor(i));
+                                if (start1[1] != start1[2]) {
+                                    field.setConnected(i, field.getColor(i), true);
+                                }
                             }
                         }
                         last = i;
 
                     }
                 }
+
                 if (field.getConnected(field.getColor(0))) {
-                   field.setCheck(0, image[0], true, field.getColor(0));
+                    field.setCheck(0, image[0], true, field.getColor(0));
                 }
+
             }
         }
 
