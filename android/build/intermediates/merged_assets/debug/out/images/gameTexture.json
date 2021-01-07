@@ -1,0 +1,10 @@
+{
+com.badlogic.gdx.scenes.scene2d.ui.Image: {
+	background: { drawable: background },
+
+	field-blue: { drawable: field-blue},
+	field-red: { drawable: field-red},
+	field-purple: { drawable: field-purple},
+	field-green: { drawable: field-green},
+},
+}

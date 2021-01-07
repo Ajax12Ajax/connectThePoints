@@ -1,13 +1,12 @@
-package com.mygdx.gragdx.screens.level;
+package com.mygdx.gragdx.screens.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.mygdx.gragdx.screens.MainScreen;
 import com.mygdx.gragdx.util.Constants;
 
-public class Field {
-    private static final String TAG = MainScreen.class.getName();
+public class Fields {
     private Skin skin;
 
     Boolean[] startingField = new Boolean[17];
@@ -25,8 +24,10 @@ public class Field {
     public int i3 = 1;
     public int i4 = 1;
 
-    public Field() {
-        skin = new Skin(new TextureAtlas(Constants.TEXTURE_ATLAS_HUD_UI));
+    public Fields() {
+        skin = new Skin(
+                Gdx.files.internal(Constants.SKIN_GAME_UI),
+                new TextureAtlas(Constants.TEXTURE_ATLAS_GAME_UI));
 
         for (int i = 0; i < 16; i++) {
             startingField[i] = false;
@@ -47,16 +48,16 @@ public class Field {
     public void setCheck(int i, Image image, Boolean check, String Check) {
         if (Check == "Check1") {
             Check1[i] = check;
-            image.setDrawable(skin, "field-up-blue");
+            image.setDrawable(skin, "field-blue");
         } else if (Check == "Check2") {
             Check2[i] = check;
-            image.setDrawable(skin, "field-up-red");
+            image.setDrawable(skin, "field-red");
         } else if (Check == "Check3") {
             Check3[i] = check;
-            image.setDrawable(skin, "field-up-purple");
+            image.setDrawable(skin, "field-purple");
         } else if (Check == "Check4") {
             Check4[i] = check;
-            image.setDrawable(skin, "field-up-green");
+            image.setDrawable(skin, "field-green");
         }
     }
 
