@@ -6,10 +6,12 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mygdx.gragdx.util.AudioManager;
 import com.mygdx.gragdx.util.Constants;
@@ -24,11 +26,10 @@ public class OptionsMenu {
 
     private Skin skin;
 
-    private Table tableTools;
-
     private Button backgroundButton;
+    private Table tableTools;
     private Slider slider;
-    private CheckBox checkBox;
+    private Image speaker;
 
 
     public void setupOptions(Stage stageT) {
@@ -39,24 +40,22 @@ public class OptionsMenu {
                 new TextureAtlas(Constants.TEXTURE_ATLAS_MENU_UI));
 
 
-        // + Background Button
         addBackgroundButton(stageT);
 
-        // + Tools
         addToolsTable();
+
 
         Preferences prefs = Preferences.instance;
         slider.setValue(prefs.volMusic);
-        checkBox.setChecked(prefs.music);
 
-        //loadSettings();
-        //Preferences prefs = Preferences.instance;
-        //slider.setValue(prefs.volMusic);
-        //saveSettings();
-        //loadSettings();
-        //AudioManager.instance.onSettingsUpdated();
+        if (slider.getValue() > 0.5f) {
+            speaker.setDrawable(skin, "speaker-high");
+        } else if (slider.getValue() == 0.0f) {
+            speaker.setDrawable(skin, "speaker-low");
+        } else {
+            speaker.setDrawable(skin, "speaker-medium");
+        }
     }
-
 
     private Table addBackgroundButton(final Stage stageT) {
         final Table table = new Table();
@@ -69,7 +68,6 @@ public class OptionsMenu {
         backgroundButton.setScaleX(55);
         backgroundButton.setColor(1, 1, 1, 0);
         backgroundButton.setVisible(true);
-
         backgroundButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -82,13 +80,10 @@ public class OptionsMenu {
             }
         });
         table.add(backgroundButton).padBottom(100);
-
-        // Add table
         stage.addActor(table);
 
         return table;
     }
-
 
 
     private Table addToolsTable() {
@@ -97,39 +92,18 @@ public class OptionsMenu {
         tableTools.setVisible(true);
         tableTools.bottom();
 
-        checkBox = new CheckBox("", skin, "mute");
-        int height = 57;
-        int width = 50;
-        checkBox.getStyle().checkboxOn.setMinHeight(height);
-        checkBox.getStyle().checkboxOff.setMinHeight(height);
-        checkBox.getStyle().checkboxOn.setMinWidth(width);
-        checkBox.getStyle().checkboxOff.setMinWidth(width);
-        tableTools.add(checkBox).padLeft(-100).padBottom(10);
-        checkBox.addListener(new ChangeListener() {
+        speaker = new Image(skin, "speaker-high");
+        speaker.setScale(0.73f);
+        tableTools.add(speaker).padLeft(-90).padBottom(23);
+        speaker.addListener(new ClickListener() {
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                saveSettings();
-                loadSettings();
-                AudioManager.instance.onSettingsUpdated();
-            }
-        });
-
-
-        slider = new Slider(0.0f, 1.0f, 0.01f, false, skin);
-
-        final Container<Slider> container=new Container<Slider>(slider);
-        container.setTransform(true);   // for enabling scaling and rotation
-        container.setOrigin(container.getWidth() / 2, container.getHeight() / 2);
-        container.size(210, 20);
-        container.setScale(1.25f);
-
-        tableTools.add(container).padBottom(7);
-        container.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                if (!checkBox.isChecked()) {
-                    Preferences prefs = Preferences.instance;
-                    slider.setValue(prefs.volMusic);
+            public void clicked(InputEvent event, float x, float y) {
+                if (speaker.getDrawable() == skin.getDrawable("speaker-high") || speaker.getDrawable() == skin.getDrawable("speaker-medium")) {
+                    speaker.setDrawable(skin, "speaker-low");
+                    slider.setValue(0);
+                } else {
+                    speaker.setDrawable(skin, "speaker-high");
+                    slider.setValue(0.6f);
                 }
                 saveSettings();
                 loadSettings();
@@ -137,13 +111,33 @@ public class OptionsMenu {
             }
         });
 
+        slider = new Slider(0.0f, 1.0f, 0.01f, false, skin);
+        final Container<Slider> container = new Container<Slider>(slider);
+        container.setTransform(true);
+        container.size(200, 20);
+        container.setScale(1.25f);
+        tableTools.add(container).padBottom(4).padRight(-25);
+        container.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (slider.getValue() > 0.5f) {
+                    speaker.setDrawable(skin, "speaker-high");
+                } else if (slider.getValue() == 0.0f) {
+                    speaker.setDrawable(skin, "speaker-low");
+                } else {
+                    speaker.setDrawable(skin, "speaker-medium");
+                }
+                saveSettings();
+                loadSettings();
+                AudioManager.instance.onSettingsUpdated();
+            }
+        });
 
         registerAction(tableTools, Actions.sequence(
                 Actions.visible(false),
                 Actions.moveBy(0, -1000, 0.15f),
                 Actions.visible(true),
                 Actions.moveBy(0, 1000, 0.15f, Interpolation.exp5Out)));
-
         stage.addActor(tableTools);
 
         return tableTools;
@@ -158,17 +152,23 @@ public class OptionsMenu {
     public void loadSettings() {
         Preferences prefs = Preferences.instance;
         prefs.load();
-        checkBox.setChecked(prefs.music);
         slider.setValue(prefs.volMusic);
     }
 
     private void saveSettings() {
         Preferences prefs = Preferences.instance;
-        prefs.music = checkBox.isChecked();
+        if (slider.getValue() == 0) {
+            prefs.music = false;
+        }
         prefs.volMusic = slider.getValue();
         prefs.save();
     }
 
+    public void draw(float deltaTime) {
+        stage.getViewport().apply();
+        stage.act(deltaTime);
+        stage.draw();
+    }
 
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
@@ -176,11 +176,5 @@ public class OptionsMenu {
 
     public void dispose() {
         stage.dispose();
-    }
-
-    public void draw(float deltaTime) {
-        stage.getViewport().apply();
-        stage.act(deltaTime);
-        stage.draw();
     }
 }

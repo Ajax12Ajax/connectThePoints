@@ -2,38 +2,38 @@ package com.mygdx.gragdx.screens.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.mygdx.gragdx.screens.MainScreen;
 import com.mygdx.gragdx.util.Constants;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class Game {
-    private static final String TAG = MainScreen.class.getName();
+    private static final String TAG = Game.class.getName();
     private final Stage backgroundStage = new Stage(new FillViewport(516, 684));
     public final Stage stage = new Stage(new ExtendViewport(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT));
 
     private final Set<Action> animationActions = new HashSet<Action>();
 
-    private Skin skinGame;
-    private Skin skinMenu;
+    private final Skin skinGame;
+    private final Skin skinMenu;
 
-    private Fields fields;
+    private final Fields fields;
 
     Label timerText;
     Image[] field = new Image[17];
+    Label restartButton;
 
     Boolean touched = false;
     int[] start1 = new int[3];
@@ -65,11 +65,6 @@ public class Game {
 
         timerText = new Label("", skinMenu, "Roboto-Thin");
         timerTable.add(timerText).padTop(20);
-        registerAction(timerText, Actions.sequence(
-                Actions.visible(false),
-                Actions.alpha(0, 0.17f),
-                Actions.visible(true),
-                Actions.alpha(1, 0.17f, Interpolation.exp5Out)));
         stage.addActor(timerTable);
 
 
@@ -80,15 +75,34 @@ public class Game {
         int t = 3;
         for (int i = 0; i < 16; i++) {
             field[i] = new Image(skinGame, "field-dn");
-            fields.setCheck(i, field[i], false, "Check1");
-            field[i].setDrawable(skinGame, "field-dn");
-            gameTable.add(field[i]).padRight(15).padBottom(15);
+            fields.setCheck(i, field[i], true, "Check0");
             if (i == t) {
                 t = t + 4;
+                gameTable.add(field[i]).padBottom(15);
                 gameTable.row();
+            } else {
+                gameTable.add(field[i]).padRight(15).padBottom(15);
             }
         }
         stage.addActor(gameTable);
+
+
+        Table restartTable = new Table();
+        restartTable.setFillParent(true);
+        restartTable.bottom();
+
+        restartButton = new Label("", skinMenu, "Roboto-Thin-Scaled");
+        restartTable.add(restartButton).padBottom(20);
+        restartButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                fields.reset();
+                stage.clear();
+                setupGame();
+            }
+        });
+        stage.addActor(restartTable);
+        stage.setDebugAll(false);
 
 
         fields.setStartingField(2);
@@ -116,6 +130,8 @@ public class Game {
 
 
     public void update() {
+        Gdx.input.setInputProcessor(stage);
+        restartButton.setText("RESTART");
         timerText.setText(String.valueOf(timer));
         timer++;
 
@@ -150,63 +166,70 @@ public class Game {
                 Vector2 mouseLocalPosition = field[i].screenToLocalCoordinates(mouseScreenPosition);
                 if (field[i].hit(mouseLocalPosition.x, mouseLocalPosition.y, false) != null) {
                     if (lastField != i) {
-                        if (!fields.getCheck(i, fields.getColor(lastField))) {
-                            fields.setCheck(i, field[i], true, fields.getColor(lastField));
 
-                            if (fields.getStartingField(i)) {
-                                fields.setCheck(i, field[i], true, fields.getColor(i));
-                                if (start1[1] != start1[2]) {
-                                    fields.setConnected(i, fields.getColor(i), true);
-                                }
+                        if (fields.getColor(i).equals("Check0") && fields.getConnected(fields.getColor(lastField))) {
+
+                        } else if (fields.getColor(i).equals("Check0")) {
+                            if (lastField == i - 1 || lastField == i + 1 || lastField == i - 4 || lastField == i + 4) {
+                                fields.setCheck(i, field[i], false, "Check0");
+                                fields.setCheck(i, field[i], true, fields.getColor(lastField));
                             }
 
-                        } else if (fields.getCheck(i, fields.getColor(lastField))) {
+                        } else if (fields.getConnected(fields.getColor(i))) {
+                            start2 = 1;
+                            lastField = 0;
+                            reset();
+
+                        } else if (fields.getStartingField(i) && start1[1] != start1[2] && fields.getColor(i).equals(fields.getColor(lastField))) {
+                            if (lastField == i - 1 || lastField == i + 1 || lastField == i - 4 || lastField == i + 4) {
+                                fields.setConnected(i, fields.getColor(i), true);
+                            } else {
+                                start2 = 1;
+                                lastField = 0;
+                                reset();
+                                fields.setConnected(i, fields.getColor(i), true);
+                            }
+
+                        } else if (fields.getStartingField(i) && (!fields.getConnected(fields.getColor(lastField)) || fields.getConnected(fields.getColor(lastField)) || fields.getConnected(fields.getColor(0)))) {
+                            start2 = 1;
+                            lastField = 0;
+                            reset();
+                            fields.setConnected(i, fields.getColor(i), true);
+
+                        } else if (fields.getCheck(i, fields.getColor(i)) && !fields.getStartingField(lastField)) {
                             fields.setCheck(lastField, field[lastField], false, fields.getColor(lastField));
-                            field[lastField].setDrawable(skinGame, "field-dn");
-                            if (start1[2] == i) {
-                                fields.setCheck(lastField, field[lastField], true, fields.getColor(i));
-                            }
-                            if (start1[1] == i) {
-                                fields.setCheck(lastField, field[lastField], false, fields.getColor(lastField));
-                                field[lastField].setDrawable(skinGame, "field-dn");
-                            }
-                            if (fields.getStartingField(lastField)) {
-                                fields.setCheck(lastField, field[lastField], true, fields.getColor(i));
-                                fields.setConnected(lastField, fields.getColor(lastField), false);
-                            }
-                            if (fields.getStartingField(i)) {
-                                if (start1[1] != start1[2]) {
-                                    fields.setConnected(i, fields.getColor(i), true);
-                                }
+                            fields.setCheck(lastField, field[lastField], true, "Check0");
+
+                            if (fields.getConnected(fields.getColor(0)) && fields.getCheck(0, fields.getColor(0))) {
+                                fields.setCheck(0, field[0], false, "Check0");
+                                fields.setCheck(0, field[0], true, fields.getColor(0));
                             }
                         }
-                        lastField = i;
 
+                        lastField = i;
                     }
                 }
-
-                if (fields.getConnected(fields.getColor(0))) {
-                    fields.setCheck(0, field[0], true, fields.getColor(0));
-                }
-
             }
         }
 
-
         if (!touched) {
-            for (int i = 0; i < 16; i++) {
-                if (!fields.getStartingField(i)) {
-                    if (!fields.getConnected(fields.getColor(i))) {
-                        fields.setCheck(i, field[i], false, "Check1");
-                        fields.setCheck(i, field[i], false, "Check2");
-                        fields.setCheck(i, field[i], false, "Check3");
-                        fields.setCheck(i, field[i], false, "Check4");
-                        field[i].setDrawable(skinGame, "field-dn");
-                        fields.i1 = 1;
-                        fields.i2 = 1;
-                        fields.i3 = 1;
-                        fields.i4 = 1;
-                    }
+            reset();
+        }
+    }
+
+    private void reset() {
+        for (int i = 0; i < 16; i++) {
+            if (!fields.getStartingField(i)) {
+                if (!fields.getConnected(fields.getColor(i))) {
+                    fields.setCheck(i, field[i], false, "Check1");
+                    fields.setCheck(i, field[i], false, "Check2");
+                    fields.setCheck(i, field[i], false, "Check3");
+                    fields.setCheck(i, field[i], false, "Check4");
+                    fields.setCheck(i, field[i], true, "Check0");
+                    fields.i1 = 1;
+                    fields.i2 = 1;
+                    fields.i3 = 1;
+                    fields.i4 = 1;
                 }
             }
         }

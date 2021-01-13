@@ -15,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.mygdx.gragdx.screens.game.Game;
 import com.mygdx.gragdx.util.Constants;
 
 import java.util.HashSet;
@@ -28,7 +27,6 @@ public class MenuScreen {
     private final Set<Action> animationActions = new HashSet<Action>();
 
     private OptionsMenu optionsMenu;
-    private Game game;
 
     Skin skin;
 
@@ -42,7 +40,6 @@ public class MenuScreen {
     public MenuScreen() {
         Gdx.input.setInputProcessor(stage);
         optionsMenu = new OptionsMenu();
-        game = new Game();
 
         skin = new Skin(
                 Gdx.files.internal(Constants.SKIN_MENU_UI),
@@ -51,7 +48,7 @@ public class MenuScreen {
 
 
     public void setupMenu() {
-        final Image background= new Image(skin, "background");
+        final Image background = new Image(skin, "background");
         backgroundStage.addActor(background);
 
 
@@ -66,7 +63,6 @@ public class MenuScreen {
             public void clicked(InputEvent event, float x, float y) {
                 menuTable.setVisible(false);
                 background.setVisible(false);
-                Gdx.input.setInputProcessor(game.stage);
                 start = true;
             }
         });

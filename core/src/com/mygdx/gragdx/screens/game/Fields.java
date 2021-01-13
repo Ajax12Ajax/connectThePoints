@@ -10,6 +10,7 @@ public class Fields {
     private Skin skin;
 
     Boolean[] startingField = new Boolean[17];
+    Boolean[] Check0 = new Boolean[17];
     Boolean[] Check1 = new Boolean[17];
     Boolean[] Check2 = new Boolean[17];
     Boolean[] Check3 = new Boolean[17];
@@ -29,8 +30,14 @@ public class Fields {
                 Gdx.files.internal(Constants.SKIN_GAME_UI),
                 new TextureAtlas(Constants.TEXTURE_ATLAS_GAME_UI));
 
+        reset();
+    }
+
+
+    public void reset() {
         for (int i = 0; i < 16; i++) {
             startingField[i] = false;
+            Check0[i] = false;
             Check1[i] = false;
             Check2[i] = false;
             Check3[i] = false;
@@ -46,16 +53,23 @@ public class Fields {
     }
 
     public void setCheck(int i, Image image, Boolean check, String Check) {
+        if (Check == "Check0") {
+            Check0[i] = check;
+            image.setDrawable(skin, "field-dn");
+        }
         if (Check == "Check1") {
             Check1[i] = check;
             image.setDrawable(skin, "field-blue");
-        } else if (Check == "Check2") {
+        }
+        if (Check == "Check2") {
             Check2[i] = check;
             image.setDrawable(skin, "field-red");
-        } else if (Check == "Check3") {
+        }
+        if (Check == "Check3") {
             Check3[i] = check;
             image.setDrawable(skin, "field-purple");
-        } else if (Check == "Check4") {
+        }
+        if (Check == "Check4") {
             Check4[i] = check;
             image.setDrawable(skin, "field-green");
         }
@@ -64,6 +78,9 @@ public class Fields {
     public Boolean getCheck(int i, String Check) {
         Boolean[] check = new Boolean[17];
         check[i] = Check1[i];
+        if (Check == "Check0") {
+            check[i] = Check0[i];
+        }
         if (Check == "Check1") {
             check[i] = Check1[i];
         }
@@ -81,6 +98,9 @@ public class Fields {
 
     public String getColor(int i) {
         String check = "Check1";
+        if (Check0[i]) {
+            check = "Check0";
+        }
         if (Check1[i]) {
             check = "Check1";
         }

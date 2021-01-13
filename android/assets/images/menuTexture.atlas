@@ -6,17 +6,17 @@ filter: Linear,Linear
 repeat: none
 Roboto-Bold
   rotate: false
-  xy: 736, 573
-  size: 509, 235
+  xy: 736, 558
+  size: 507, 250
   orig: 512, 512
-  offset: 0, 269
+  offset: 0, 255
   index: -1
 Roboto-Thin
   rotate: false
-  xy: 736, 336
-  size: 507, 229
+  xy: 736, 305
+  size: 509, 245
   orig: 512, 512
-  offset: 0, 274
+  offset: 0, 258
   index: -1
 background
   rotate: false
@@ -25,23 +25,9 @@ background
   orig: 720, 800
   offset: 0, 0
   index: -1
-check-off
-  rotate: false
-  xy: 736, 218
-  size: 46, 51
-  orig: 46, 51
-  offset: 0, 0
-  index: -1
-check-on
-  rotate: false
-  xy: 736, 277
-  size: 46, 51
-  orig: 46, 51
-  offset: 0, 0
-  index: -1
 slider
   rotate: false
-  xy: 790, 294
+  xy: 897, 289
   size: 8, 8
   split: 2, 2, 2, 2
   orig: 8, 8
@@ -49,16 +35,37 @@ slider
   index: -1
 slider-knob-h
   rotate: false
-  xy: 790, 310
+  xy: 736, 125
   size: 9, 18
   orig: 9, 18
   offset: 0, 0
   index: -1
 slider-knobBefore
   rotate: false
-  xy: 736, 202
+  xy: 823, 212
   size: 8, 8
   split: 2, 2, 2, 2
   orig: 8, 8
   offset: 0, 0
+  index: -1
+speaker-high
+  rotate: false
+  xy: 736, 151
+  size: 79, 69
+  orig: 82, 69
+  offset: 1, 0
+  index: -1
+speaker-low
+  rotate: false
+  xy: 736, 228
+  size: 81, 69
+  orig: 82, 69
+  offset: 1, 0
+  index: -1
+speaker-medium
+  rotate: false
+  xy: 825, 228
+  size: 64, 69
+  orig: 82, 69
+  offset: 1, 0
   index: -1
