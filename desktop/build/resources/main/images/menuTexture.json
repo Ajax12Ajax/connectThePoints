@@ -3,12 +3,16 @@
     Roboto-Thin: { file: Roboto-Thin.fnt },
     Roboto-Bold: { file: Roboto-Bold.fnt },
 
-    Roboto-Thin-Scaled: { file: Roboto-Thin.fnt, scaledSize: 41 }
+    Roboto-Thin-Scaled: { file: Roboto-Thin.fnt, scaledSize: 40 }
+    Roboto-Thin-Scaled-2: { file: Roboto-Thin.fnt, scaledSize: 43 }
+    Roboto-Bold-Scaled-2: { file: Roboto-Bold.fnt, scaledSize: 43 }
   },
   com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
     Roboto-Thin: { font: Roboto-Thin },
     Roboto-Bold: { font: Roboto-Bold },
     Roboto-Thin-Scaled: { font: Roboto-Thin-Scaled }
+    Roboto-Thin-Scaled-2: { font: Roboto-Thin-Scaled-2 }
+    Roboto-Bold-Scaled-2: { font: Roboto-Bold-Scaled-2 }
   },
   com.badlogic.gdx.scenes.scene2d.ui.Image: {
     background: { drawable: background },

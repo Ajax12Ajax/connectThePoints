@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.mygdx.gragdx.util.Constants;
+import com.mygdx.gragdx.util.levels.Levels;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -26,12 +27,15 @@ public class MenuScreen {
 
     private final Set<Action> animationActions = new HashSet<Action>();
 
-    private OptionsMenu optionsMenu;
+    private final OptionsMenu optionsMenu;
 
     Skin skin;
 
     Label buttonStart;
     Label buttonTools;
+    Label buttonNextLevel;
+    Label buttonRepeat;
+    Label buttonHome;
 
     public Boolean start = false;
     float actionsDelay = 0.15f;
@@ -81,6 +85,79 @@ public class MenuScreen {
 
 
         stage.addActor(menuTable);
+    }
+
+    public void setupLevelEnd() {
+        Gdx.input.setInputProcessor(stage);
+
+        final Image background = new Image(skin, "background");
+        backgroundStage.addActor(background);
+
+        final Table textTable = new Table();
+        textTable.setFillParent(true);
+        textTable.center();
+
+        actionsDelay = 0.10f;
+        Label text = new Label("Level", skin, "Roboto-Thin");
+        textTable.add(text).padBottom(500);
+        buttonAction(text);
+        Label text2 = new Label("Completed", skin, "Roboto-Bold");
+        textTable.add(text2).padBottom(500).padLeft(15).row();
+        buttonAction(text2);
+
+        stage.addActor(textTable);
+
+
+        final Table table = new Table();
+        table.setFillParent(true);
+        table.center();
+
+        actionsDelay = 0.25f;
+        buttonNextLevel = new Label("Next Level", skin, "Roboto-Bold-Scaled-2");
+        table.add(buttonNextLevel).row();
+        buttonNextLevel.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Levels prefs = Levels.instance;
+                prefs.level++;
+                prefs.save();
+                background.setVisible(false);
+                textTable.setVisible(false);
+                table.setVisible(false);
+            }
+        });
+        buttonAction(buttonNextLevel);
+
+        buttonRepeat = new Label("Replay", skin, "Roboto-Thin-Scaled-2");
+        table.add(buttonRepeat).row();
+        buttonRepeat.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                background.setVisible(false);
+                textTable.setVisible(false);
+                table.setVisible(false);
+            }
+        });
+        buttonAction(buttonRepeat);
+
+        buttonHome = new Label("Home", skin, "Roboto-Thin-Scaled-2");
+        table.add(buttonHome);
+        buttonHome.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Levels prefs = Levels.instance;
+                prefs.level++;
+                prefs.save();
+                background.setVisible(false);
+                textTable.setVisible(false);
+                table.setVisible(false);
+                setupMenu();
+            }
+        });
+        buttonAction(buttonHome);
+
+
+        stage.addActor(table);
     }
 
     private void buttonAction(Label label) {

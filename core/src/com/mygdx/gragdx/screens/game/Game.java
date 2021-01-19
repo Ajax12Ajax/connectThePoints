@@ -3,8 +3,6 @@ package com.mygdx.gragdx.screens.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -14,36 +12,49 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.mygdx.gragdx.screens.MenuScreen;
 import com.mygdx.gragdx.util.Constants;
-
-import java.util.HashSet;
-import java.util.Set;
+import com.mygdx.gragdx.util.levels.FiveByFive;
+import com.mygdx.gragdx.util.levels.FourByFour;
+import com.mygdx.gragdx.util.levels.SixBySix;
+import com.mygdx.gragdx.util.levels.Levels;
 
 public class Game {
     private static final String TAG = Game.class.getName();
     private final Stage backgroundStage = new Stage(new FillViewport(516, 684));
     public final Stage stage = new Stage(new ExtendViewport(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT));
 
-    private final Set<Action> animationActions = new HashSet<Action>();
-
     private final Skin skinGame;
     private final Skin skinMenu;
 
     private final Fields fields;
+    private final Levels levels;
+    private final MenuScreen menuScreen;
+    private final FourByFour fourByFour;
+    private final FiveByFive fiveByFive;
+    private final SixBySix sixBySix;
 
-    Label timerText;
-    Image[] field = new Image[17];
-    Label restartButton;
+    public Label timerText;
+    Image[] field = new Image[Fields.quantity + 1];
+    public Label restartButton;
 
+    public Boolean endlevel = false;
+    public Boolean restart = true;
     Boolean touched = false;
     int[] start1 = new int[3];
     int start2 = 1;
     int lastField;
-    int timer = 0;
+    public int timer = 0;
+    int rounds = 0;
 
 
     public Game() {
         fields = new Fields();
+        levels = new Levels();
+        menuScreen = new MenuScreen();
+        fourByFour = new FourByFour();
+        fiveByFive = new FiveByFive();
+        sixBySix = new SixBySix();
 
         skinGame = new Skin(
                 Gdx.files.internal(Constants.SKIN_GAME_UI),
@@ -55,6 +66,11 @@ public class Game {
 
 
     public void setupGame() {
+        levels.Level();
+
+        field = new Image[Fields.quantity + 1];
+        fields.reset();
+
         Image background = new Image(skinGame, "background");
         backgroundStage.addActor(background);
 
@@ -62,7 +78,6 @@ public class Game {
         Table timerTable = new Table();
         timerTable.setFillParent(true);
         timerTable.top();
-
         timerText = new Label("", skinMenu, "Roboto-Thin");
         timerTable.add(timerText).padTop(20);
         stage.addActor(timerTable);
@@ -71,13 +86,12 @@ public class Game {
         Table gameTable = new Table();
         gameTable.setFillParent(true);
         gameTable.center();
-
-        int t = 3;
-        for (int i = 0; i < 16; i++) {
+        int t = Fields.row - 1;
+        for (int i = 0; i < Fields.quantity; i++) {
             field[i] = new Image(skinGame, "field-dn");
             fields.setCheck(i, field[i], true, "Check0");
             if (i == t) {
-                t = t + 4;
+                t = t + Fields.row;
                 gameTable.add(field[i]).padBottom(15);
                 gameTable.row();
             } else {
@@ -90,42 +104,28 @@ public class Game {
         Table restartTable = new Table();
         restartTable.setFillParent(true);
         restartTable.bottom();
-
         restartButton = new Label("", skinMenu, "Roboto-Thin-Scaled");
         restartTable.add(restartButton).padBottom(20);
         restartButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                fields.reset();
-                stage.clear();
-                setupGame();
+                restart = false;
+                repeat();
             }
         });
         stage.addActor(restartTable);
-        stage.setDebugAll(false);
 
 
-        fields.setStartingField(2);
-        fields.setCheck(2, field[2], true, "Check1");
-        fields.setStartingField(3);
-        fields.setCheck(3, field[3], true, "Check3");
-        fields.setStartingField(4);
-        fields.setCheck(4, field[4], true, "Check1");
-        fields.setStartingField(8);
-        fields.setCheck(8, field[8], true, "Check4");
-        fields.setStartingField(9);
-        fields.setCheck(9, field[9], true, "Check3");
-        fields.setStartingField(10);
-        fields.setCheck(10, field[10], true, "Check2");
-        fields.setStartingField(14);
-        fields.setCheck(14, field[14], true, "Check4");
-        fields.setStartingField(15);
-        fields.setCheck(15, field[15], true, "Check2");
-    }
-
-    private void registerAction(Actor actor, Action action) {
-        animationActions.add(action);
-        actor.addAction(action);
+        if (Levels.levelName.equals("FourByFour")) {
+            fourByFour.create(fields, field, restart);
+        }
+        if (Levels.levelName.equals("FiveByFive")) {
+            fiveByFive.create(fields, field, restart);
+        }
+        if (Levels.levelName.equals("SixBySix")) {
+            sixBySix.create(fields, field, restart);
+        }
+        restart = true;
     }
 
 
@@ -136,7 +136,7 @@ public class Game {
         timer++;
 
         if (Gdx.input.isTouched()) {
-            for (int i = 0; i < 16; i++) {
+            for (int i = 0; i < Fields.quantity; i++) {
                 if (fields.getStartingField(i)) {
                     Vector2 mouseScreenPosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
                     Vector2 mouseLocalPosition = field[i].screenToLocalCoordinates(mouseScreenPosition);
@@ -161,16 +161,16 @@ public class Game {
 
 
         if (touched) {
-            for (int i = 0; i < 16; i++) {
+            for (int i = 0; i < Fields.quantity; i++) {
                 Vector2 mouseScreenPosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
                 Vector2 mouseLocalPosition = field[i].screenToLocalCoordinates(mouseScreenPosition);
                 if (field[i].hit(mouseLocalPosition.x, mouseLocalPosition.y, false) != null) {
-                    if (lastField != i) {
+                    if (lastField != i || (i == 0 && fields.getStartingField(0))) {
 
                         if (fields.getColor(i).equals("Check0") && fields.getConnected(fields.getColor(lastField))) {
 
                         } else if (fields.getColor(i).equals("Check0")) {
-                            if (lastField == i - 1 || lastField == i + 1 || lastField == i - 4 || lastField == i + 4) {
+                            if (lastField == i - 1 || lastField == i + 1 || lastField == i - Fields.row || lastField == i + Fields.row) {
                                 fields.setCheck(i, field[i], false, "Check0");
                                 fields.setCheck(i, field[i], true, fields.getColor(lastField));
                             }
@@ -181,16 +181,14 @@ public class Game {
                             reset();
 
                         } else if (fields.getStartingField(i) && start1[1] != start1[2] && fields.getColor(i).equals(fields.getColor(lastField))) {
-                            if (lastField == i - 1 || lastField == i + 1 || lastField == i - 4 || lastField == i + 4) {
-                                fields.setConnected(i, fields.getColor(i), true);
-                            } else {
+                            if (lastField != i - 1 && lastField != i + 1 && lastField != i - Fields.row && lastField != i + Fields.row) {
                                 start2 = 1;
                                 lastField = 0;
                                 reset();
-                                fields.setConnected(i, fields.getColor(i), true);
                             }
+                            fields.setConnected(i, fields.getColor(i), true);
 
-                        } else if (fields.getStartingField(i) && (!fields.getConnected(fields.getColor(lastField)) || fields.getConnected(fields.getColor(lastField)) || fields.getConnected(fields.getColor(0)))) {
+                        } else if (fields.getStartingField(i)) {
                             start2 = 1;
                             lastField = 0;
                             reset();
@@ -199,7 +197,6 @@ public class Game {
                         } else if (fields.getCheck(i, fields.getColor(i)) && !fields.getStartingField(lastField)) {
                             fields.setCheck(lastField, field[lastField], false, fields.getColor(lastField));
                             fields.setCheck(lastField, field[lastField], true, "Check0");
-
                             if (fields.getConnected(fields.getColor(0)) && fields.getCheck(0, fields.getColor(0))) {
                                 fields.setCheck(0, field[0], false, "Check0");
                                 fields.setCheck(0, field[0], true, fields.getColor(0));
@@ -214,11 +211,22 @@ public class Game {
 
         if (!touched) {
             reset();
+            if (fields.getConnected("Check1") && fields.getConnected("Check2") && fields.getConnected("Check3") && fields.getConnected("Check4")) {
+                rounds++;
+
+                if (rounds == levels.rounds) {
+                    menuScreen.start = false;
+                    endlevel = true;
+                    rounds = 0;
+                } else {
+                    repeat();
+                }
+            }
         }
     }
 
     private void reset() {
-        for (int i = 0; i < 16; i++) {
+        for (int i = 0; i < Fields.quantity; i++) {
             if (!fields.getStartingField(i)) {
                 if (!fields.getConnected(fields.getColor(i))) {
                     fields.setCheck(i, field[i], false, "Check1");
@@ -233,6 +241,11 @@ public class Game {
                 }
             }
         }
+    }
+
+    public void repeat() {
+        stage.clear();
+        setupGame();
     }
 
 

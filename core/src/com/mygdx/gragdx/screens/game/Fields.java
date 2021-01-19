@@ -7,14 +7,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mygdx.gragdx.util.Constants;
 
 public class Fields {
-    private Skin skin;
+    private final Skin skin;
 
-    Boolean[] startingField = new Boolean[17];
-    Boolean[] Check0 = new Boolean[17];
-    Boolean[] Check1 = new Boolean[17];
-    Boolean[] Check2 = new Boolean[17];
-    Boolean[] Check3 = new Boolean[17];
-    Boolean[] Check4 = new Boolean[17];
+    public static int quantity = 16;
+    public static int row = 4;
+
+    Boolean[] startingField = new Boolean[quantity + 1];
+    Boolean[] Check0 = new Boolean[quantity + 1];
+    Boolean[] Check1 = new Boolean[quantity + 1];
+    Boolean[] Check2 = new Boolean[quantity + 1];
+    Boolean[] Check3 = new Boolean[quantity + 1];
+    Boolean[] Check4 = new Boolean[quantity + 1];
 
     Boolean[] Connected1 = new Boolean[3];
     Boolean[] Connected2 = new Boolean[3];
@@ -29,13 +32,18 @@ public class Fields {
         skin = new Skin(
                 Gdx.files.internal(Constants.SKIN_GAME_UI),
                 new TextureAtlas(Constants.TEXTURE_ATLAS_GAME_UI));
-
-        reset();
     }
 
 
     public void reset() {
-        for (int i = 0; i < 16; i++) {
+        startingField = new Boolean[quantity + 1];
+        Check0 = new Boolean[quantity + 1];
+        Check1 = new Boolean[quantity + 1];
+        Check2 = new Boolean[quantity + 1];
+        Check3 = new Boolean[quantity + 1];
+        Check4 = new Boolean[quantity + 1];
+
+        for (int i = 0; i < quantity; i++) {
             startingField[i] = false;
             Check0[i] = false;
             Check1[i] = false;
@@ -53,44 +61,44 @@ public class Fields {
     }
 
     public void setCheck(int i, Image image, Boolean check, String Check) {
-        if (Check == "Check0") {
+        if (Check.equals("Check0")) {
             Check0[i] = check;
             image.setDrawable(skin, "field-dn");
         }
-        if (Check == "Check1") {
+        if (Check.equals("Check1")) {
             Check1[i] = check;
             image.setDrawable(skin, "field-blue");
         }
-        if (Check == "Check2") {
+        if (Check.equals("Check2")) {
             Check2[i] = check;
             image.setDrawable(skin, "field-red");
         }
-        if (Check == "Check3") {
+        if (Check.equals("Check3")) {
             Check3[i] = check;
             image.setDrawable(skin, "field-purple");
         }
-        if (Check == "Check4") {
+        if (Check.equals("Check4")) {
             Check4[i] = check;
             image.setDrawable(skin, "field-green");
         }
     }
 
     public Boolean getCheck(int i, String Check) {
-        Boolean[] check = new Boolean[17];
+        Boolean[] check = new Boolean[quantity + 1];
         check[i] = Check1[i];
-        if (Check == "Check0") {
+        if (Check.equals("Check0")) {
             check[i] = Check0[i];
         }
-        if (Check == "Check1") {
+        if (Check.equals("Check1")) {
             check[i] = Check1[i];
         }
-        if (Check == "Check2") {
+        if (Check.equals("Check2")) {
             check[i] = Check2[i];
         }
-        if (Check == "Check3") {
+        if (Check.equals("Check3")) {
             check[i] = Check3[i];
         }
-        if (Check == "Check4") {
+        if (Check.equals("Check4")) {
             check[i] = Check4[i];
         }
         return check[i];
@@ -127,28 +135,28 @@ public class Fields {
     public void setConnected(int i, String Check, Boolean check) {
         if (check) {
             if (getStartingField(i)) {
-                if (Check == "Check1") {
+                if (Check.equals("Check1")) {
                     if (i1 == 3) {
                         i1 = 1;
                     }
                     Connected1[i1] = true;
                     i1++;
                 }
-                if (Check == "Check2") {
+                if (Check.equals("Check2")) {
                     if (i2 == 3) {
                         i2 = 1;
                     }
                     Connected2[i2] = true;
                     i2++;
                 }
-                if (Check == "Check3") {
+                if (Check.equals("Check3")) {
                     if (i3 == 3) {
                         i3 = 1;
                     }
                     Connected3[i3] = true;
                     i3++;
                 }
-                if (Check == "Check4") {
+                if (Check.equals("Check4")) {
                     if (i4 == 3) {
                         i4 = 1;
                     }
@@ -158,7 +166,7 @@ public class Fields {
             }
         } else if (!check) {
             if (getStartingField(i)) {
-                if (Check == "Check1") {
+                if (Check.equals("Check1")) {
                     if (i1 == 2) {
                         i1 = 1;
                     }
@@ -167,7 +175,7 @@ public class Fields {
                     }
                     Connected1[i1] = false;
                 }
-                if (Check == "Check2") {
+                if (Check.equals("Check2")) {
                     if (i2 == 2) {
                         i2 = 1;
                     }
@@ -176,7 +184,7 @@ public class Fields {
                     }
                     Connected2[i2] = false;
                 }
-                if (Check == "Check3") {
+                if (Check.equals("Check3")) {
                     if (i3 == 2) {
                         i3 = 1;
                     }
@@ -185,7 +193,7 @@ public class Fields {
                     }
                     Connected3[i3] = false;
                 }
-                if (Check == "Check4") {
+                if (Check.equals("Check4")) {
                     if (i4 == 2) {
                         i4 = 1;
                     }
@@ -199,34 +207,18 @@ public class Fields {
     }
 
     public Boolean getConnected(String Check) {
-        Boolean Connected = false;
-        if (Check == "Check1") {
-            if (Connected1[1] && Connected1[2]) {
-                Connected = true;
-            } else {
-                Connected = false;
-            }
+        boolean Connected = false;
+        if (Check.equals("Check1")) {
+            Connected = Connected1[1] && Connected1[2];
         }
-        if (Check == "Check2") {
-            if (Connected2[1] && Connected2[2]) {
-                Connected = true;
-            } else {
-                Connected = false;
-            }
+        if (Check.equals("Check2")) {
+            Connected = Connected2[1] && Connected2[2];
         }
-        if (Check == "Check3") {
-            if (Connected3[1] && Connected3[2]) {
-                Connected = true;
-            } else {
-                Connected = false;
-            }
+        if (Check.equals("Check3")) {
+            Connected = Connected3[1] && Connected3[2];
         }
-        if (Check == "Check4") {
-            if (Connected4[1] && Connected4[2]) {
-                Connected = true;
-            } else {
-                Connected = false;
-            }
+        if (Check.equals("Check4")) {
+            Connected = Connected4[1] && Connected4[2];
         }
         return Connected;
     }

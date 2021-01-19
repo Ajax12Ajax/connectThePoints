@@ -2,12 +2,16 @@ package com.mygdx.gragdx.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL30;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.gragdx.screens.game.Game;
+import com.mygdx.gragdx.util.levels.Levels;
 
 
 public class MainScreen extends AbstractGameScreen {
     public Game game;
     private MenuScreen menuScreen;
+    private Levels levels;
 
 
     public MainScreen(com.badlogic.gdx.Game game) {
@@ -19,6 +23,7 @@ public class MainScreen extends AbstractGameScreen {
     public void show() {
         game = new Game();
         menuScreen = new MenuScreen();
+        levels = new Levels();
 
         game.setupGame();
         menuScreen.setupMenu();
@@ -32,7 +37,41 @@ public class MainScreen extends AbstractGameScreen {
         game.draw(deltaTime);
         menuScreen.draw(deltaTime);
 
-        if (menuScreen.start) {
+        if (game.endlevel) {
+            menuScreen.start = false;
+            menuScreen.setupLevelEnd();
+            game.restartButton.setText("");
+            game.timerText.setText("");
+            menuScreen.buttonNextLevel.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    game.stage.clear();
+                    levels.Level();
+                    game.setupGame();
+                    menuScreen.start = true;
+                    game.timer = 0;
+                }
+            });
+            menuScreen.buttonRepeat.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    game.stage.clear();
+                    game.setupGame();
+                    menuScreen.start = true;
+                    game.timer = 0;
+                }
+            });
+            menuScreen.buttonHome.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    game.stage.clear();
+                    levels.Level();
+                    game.setupGame();
+                    game.timer = 0;
+                }
+            });
+            game.endlevel = false;
+        } else if (menuScreen.start) {
             game.update();
         }
     }
