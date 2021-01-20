@@ -8,7 +8,7 @@ public class Levels {
     public static final Levels instance = new Levels();
     public int level;
     public int stage;
-    private com.badlogic.gdx.Preferences prefs;
+    private final com.badlogic.gdx.Preferences prefs;
 
 
     public Levels() {
@@ -99,6 +99,10 @@ public class Levels {
                     break;
                 case 9:
                     levelName = "SixBySix";
+                    break;
+                case 10:
+                    prefs.level = 1;
+                    prefs.save();
                     break;
             }
         }

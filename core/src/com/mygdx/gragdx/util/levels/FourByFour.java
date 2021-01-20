@@ -7,7 +7,7 @@ import com.mygdx.gragdx.screens.game.Fields;
 public class FourByFour {
     int name = MathUtils.random(1, 7);
 
-    public void create(Fields fields, Image field[], Boolean restart) {
+    public void create(Fields fields, Image[] field, Boolean restart) {
         if (restart)
             name = MathUtils.random(1, 7);
         for (int i = 0; i < 8; i++) {

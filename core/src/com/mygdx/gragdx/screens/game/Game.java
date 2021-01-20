@@ -20,7 +20,6 @@ import com.mygdx.gragdx.util.levels.SixBySix;
 import com.mygdx.gragdx.util.levels.Levels;
 
 public class Game {
-    private static final String TAG = Game.class.getName();
     private final Stage backgroundStage = new Stage(new FillViewport(516, 684));
     public final Stage stage = new Stage(new ExtendViewport(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT));
 
@@ -35,6 +34,7 @@ public class Game {
     private final SixBySix sixBySix;
 
     public Label timerText;
+    public Label roundsText;
     Image[] field = new Image[Fields.quantity + 1];
     public Label restartButton;
 
@@ -44,8 +44,9 @@ public class Game {
     int[] start1 = new int[3];
     int start2 = 1;
     int lastField;
-    public int timer = 0;
     int rounds = 0;
+    public int milliseconds = 0;
+    public int seconds = 0;
 
 
     public Game() {
@@ -79,8 +80,15 @@ public class Game {
         timerTable.setFillParent(true);
         timerTable.top();
         timerText = new Label("", skinMenu, "Roboto-Thin");
-        timerTable.add(timerText).padTop(20);
+        timerTable.add(timerText).padTop(10);
         stage.addActor(timerTable);
+
+        Table roundsTable = new Table();
+        roundsTable.setFillParent(true);
+        roundsTable.top();
+        roundsText = new Label("", skinMenu, "Roboto-Thin");
+        roundsTable.add(roundsText).padTop(70);
+        stage.addActor(roundsTable);
 
 
         Table gameTable = new Table();
@@ -131,9 +139,24 @@ public class Game {
 
     public void update() {
         Gdx.input.setInputProcessor(stage);
+
+        milliseconds++;
+        if (milliseconds == 100) {
+            seconds++;
+            milliseconds = 0;
+        }
+        String strMilliseconds = String.valueOf(milliseconds);
+        String strSeconds = String.valueOf(seconds);
+        if (milliseconds < 10) {
+            strMilliseconds = "0" + milliseconds;
+        }
+        if (seconds < 10) {
+            strSeconds = "0" + seconds;
+        }
+        timerText.setText(strSeconds + "." + strMilliseconds);
+        roundsText.setText(rounds + 1 + " /" + levels.rounds);
         restartButton.setText("RESTART");
-        timerText.setText(String.valueOf(timer));
-        timer++;
+
 
         if (Gdx.input.isTouched()) {
             for (int i = 0; i < Fields.quantity; i++) {

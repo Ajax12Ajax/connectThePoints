@@ -42,6 +42,7 @@ public class MainScreen extends AbstractGameScreen {
             menuScreen.setupLevelEnd();
             game.restartButton.setText("");
             game.timerText.setText("");
+            game.roundsText.setText("");
             menuScreen.buttonNextLevel.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -49,7 +50,8 @@ public class MainScreen extends AbstractGameScreen {
                     levels.Level();
                     game.setupGame();
                     menuScreen.start = true;
-                    game.timer = 0;
+                    game.milliseconds = 0;
+                    game.seconds = 0;
                 }
             });
             menuScreen.buttonRepeat.addListener(new ClickListener() {
@@ -58,7 +60,8 @@ public class MainScreen extends AbstractGameScreen {
                     game.stage.clear();
                     game.setupGame();
                     menuScreen.start = true;
-                    game.timer = 0;
+                    game.milliseconds = 0;
+                    game.seconds = 0;
                 }
             });
             menuScreen.buttonHome.addListener(new ClickListener() {
@@ -67,7 +70,8 @@ public class MainScreen extends AbstractGameScreen {
                     game.stage.clear();
                     levels.Level();
                     game.setupGame();
-                    game.timer = 0;
+                    game.milliseconds = 0;
+                    game.seconds = 0;
                 }
             });
             game.endlevel = false;

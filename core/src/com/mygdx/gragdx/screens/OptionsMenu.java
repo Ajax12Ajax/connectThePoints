@@ -57,7 +57,7 @@ public class OptionsMenu {
         }
     }
 
-    private Table addBackgroundButton(final Stage stageT) {
+    private void addBackgroundButton(final Stage stageT) {
         final Table table = new Table();
         table.setFillParent(true);
         table.bottom();
@@ -81,12 +81,10 @@ public class OptionsMenu {
         });
         table.add(backgroundButton).padBottom(100);
         stage.addActor(table);
-
-        return table;
     }
 
 
-    private Table addToolsTable() {
+    private void addToolsTable() {
         tableTools = new Table();
         tableTools.setFillParent(true);
         tableTools.setVisible(true);
@@ -112,7 +110,7 @@ public class OptionsMenu {
         });
 
         slider = new Slider(0.0f, 1.0f, 0.01f, false, skin);
-        final Container<Slider> container = new Container<Slider>(slider);
+        final Container<Slider> container = new Container<>(slider);
         container.setTransform(true);
         container.size(200, 20);
         container.setScale(1.25f);
@@ -139,8 +137,6 @@ public class OptionsMenu {
                 Actions.visible(true),
                 Actions.moveBy(0, 1000, 0.15f, Interpolation.exp5Out)));
         stage.addActor(tableTools);
-
-        return tableTools;
     }
 
     private void registerAction(Actor actor, Action action) {
