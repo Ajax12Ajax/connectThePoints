@@ -16,8 +16,8 @@ import com.mygdx.gragdx.screens.MenuScreen;
 import com.mygdx.gragdx.util.Constants;
 import com.mygdx.gragdx.util.levels.FiveByFive;
 import com.mygdx.gragdx.util.levels.FourByFour;
-import com.mygdx.gragdx.util.levels.SixBySix;
 import com.mygdx.gragdx.util.levels.Levels;
+import com.mygdx.gragdx.util.levels.SixBySix;
 
 public class Game {
     private final Stage backgroundStage = new Stage(new FillViewport(516, 684));
@@ -39,7 +39,7 @@ public class Game {
     public Label restartButton;
 
     public Boolean endlevel = false;
-    public Boolean restart = true;
+    Boolean restart = true;
     Boolean touched = false;
     int[] start1 = new int[3];
     int start2 = 1;
@@ -47,6 +47,7 @@ public class Game {
     int rounds = 0;
     public int milliseconds = 0;
     public int seconds = 0;
+    int lastField2;
 
 
     public Game() {
@@ -66,7 +67,7 @@ public class Game {
     }
 
 
-    public void setupGame() {
+    public void setupGame(Boolean restartTimer) {
         levels.Level();
 
         field = new Image[Fields.quantity + 1];
@@ -94,16 +95,14 @@ public class Game {
         Table gameTable = new Table();
         gameTable.setFillParent(true);
         gameTable.center();
-        int t = Fields.row - 1;
+        int row = Fields.row - 1;
         for (int i = 0; i < Fields.quantity; i++) {
             field[i] = new Image(skinGame, "field-dn");
             fields.setCheck(i, field[i], true, "Check0");
-            if (i == t) {
-                t = t + Fields.row;
-                gameTable.add(field[i]).padBottom(15);
+            gameTable.add(field[i]);
+            if (i == row) {
+                row = row + Fields.row;
                 gameTable.row();
-            } else {
-                gameTable.add(field[i]).padRight(15).padBottom(15);
             }
         }
         stage.addActor(gameTable);
@@ -118,7 +117,8 @@ public class Game {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 restart = false;
-                repeat();
+                stage.clear();
+                setupGame(false);
             }
         });
         stage.addActor(restartTable);
@@ -133,18 +133,18 @@ public class Game {
         if (Levels.levelName.equals("SixBySix")) {
             sixBySix.create(fields, field, restart);
         }
+        if (restartTimer) seconds = levels.timer;
         restart = true;
     }
 
 
     public void update() {
         Gdx.input.setInputProcessor(stage);
-
-        milliseconds++;
-        if (milliseconds == 100) {
-            seconds++;
-            milliseconds = 0;
+        if (milliseconds == 0) {
+            seconds--;
+            milliseconds = 99;
         }
+        milliseconds--;
         String strMilliseconds = String.valueOf(milliseconds);
         String strSeconds = String.valueOf(seconds);
         if (milliseconds < 10) {
@@ -154,6 +154,12 @@ public class Game {
             strSeconds = "0" + seconds;
         }
         timerText.setText(strSeconds + "." + strMilliseconds);
+        if (seconds == 0 && milliseconds == 0) {
+            MenuScreen.completedLevel = false;
+            menuScreen.start = false;
+            endlevel = true;
+            rounds = 0;
+        }
         roundsText.setText(rounds + 1 + " /" + levels.rounds);
         restartButton.setText("RESTART");
 
@@ -224,8 +230,14 @@ public class Game {
                                 fields.setCheck(0, field[0], false, "Check0");
                                 fields.setCheck(0, field[0], true, fields.getColor(0));
                             }
+                            if (fields.getColor(lastField2).equals(fields.getColor(i)) && i != lastField2) {
+                                start2 = 1;
+                                lastField = 0;
+                                reset();
+                            }
                         }
 
+                        lastField2 = lastField;
                         lastField = i;
                     }
                 }
@@ -236,13 +248,14 @@ public class Game {
             reset();
             if (fields.getConnected("Check1") && fields.getConnected("Check2") && fields.getConnected("Check3") && fields.getConnected("Check4")) {
                 rounds++;
-
                 if (rounds == levels.rounds) {
+                    MenuScreen.completedLevel = true;
                     menuScreen.start = false;
                     endlevel = true;
                     rounds = 0;
                 } else {
-                    repeat();
+                    stage.clear();
+                    setupGame(false);
                 }
             }
         }
@@ -264,11 +277,6 @@ public class Game {
                 }
             }
         }
-    }
-
-    public void repeat() {
-        stage.clear();
-        setupGame();
     }
 
 

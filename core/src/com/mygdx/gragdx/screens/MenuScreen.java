@@ -32,13 +32,13 @@ public class MenuScreen {
     Skin skin;
 
     Label buttonStart;
-    Label buttonTools;
+    Label buttonOptions;
     Label buttonNextLevel;
-    Label buttonRepeat;
+    Label buttonReplay;
     Label buttonHome;
 
     public Boolean start = false;
-    float actionsDelay = 0.15f;
+    static public Boolean completedLevel;
 
 
     public MenuScreen() {
@@ -56,112 +56,116 @@ public class MenuScreen {
         backgroundStage.addActor(background);
 
 
-        final Table menuTable = new Table();
-        menuTable.setFillParent(true);
-        menuTable.center();
+        final Table table = new Table();
+        table.setFillParent(true);
+        table.center();
 
         buttonStart = new Label("Play", skin, "Roboto-Bold");
-        menuTable.add(buttonStart).row();
+        table.add(buttonStart).row();
         buttonStart.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                menuTable.setVisible(false);
+                table.setVisible(false);
                 background.setVisible(false);
                 start = true;
             }
         });
-        buttonAction(buttonStart);
 
-        buttonTools = new Label("Options", skin, "Roboto-Thin");
-        menuTable.add(buttonTools);
-        buttonTools.addListener(new ClickListener() {
+        buttonOptions = new Label("Options", skin, "Roboto-Thin");
+        table.add(buttonOptions);
+        buttonOptions.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 optionsMenu.setupOptions(stage);
             }
         });
-        actionsDelay = 0.35f;
-        buttonAction(buttonTools);
 
 
-        stage.addActor(menuTable);
+        buttonAction(table, 0.35f);
+        stage.addActor(table);
     }
 
     public void setupLevelEnd() {
         Gdx.input.setInputProcessor(stage);
+        String text = "Completed";
+        String font = "Roboto-Thin-Scaled-2";
+        if (!completedLevel) {
+            text = "Failed";
+            font = "Roboto-Bold-Scaled-2";
+        }
 
         final Image background = new Image(skin, "background");
         backgroundStage.addActor(background);
 
-        final Table textTable = new Table();
-        textTable.setFillParent(true);
-        textTable.center();
 
-        actionsDelay = 0.10f;
-        Label text = new Label("Level", skin, "Roboto-Thin");
-        textTable.add(text).padBottom(500);
-        buttonAction(text);
-        Label text2 = new Label("Completed", skin, "Roboto-Bold");
-        textTable.add(text2).padBottom(500).padLeft(15).row();
-        buttonAction(text2);
+        final Table labelTable = new Table();
+        labelTable.setFillParent(true);
+        labelTable.center();
 
-        stage.addActor(textTable);
+        Label label1 = new Label("Level", skin, "Roboto-Thin");
+        labelTable.add(label1).padBottom(500);
+        Label label2 = new Label(text, skin, "Roboto-Bold");
+        labelTable.add(label2).padBottom(500).padLeft(15).row();
+
+        buttonAction(labelTable, 0.10f);
+        stage.addActor(labelTable);
 
 
         final Table table = new Table();
         table.setFillParent(true);
         table.center();
 
-        actionsDelay = 0.25f;
-        buttonNextLevel = new Label("Next Level", skin, "Roboto-Bold-Scaled-2");
-        table.add(buttonNextLevel).row();
-        buttonNextLevel.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Levels prefs = Levels.instance;
-                prefs.level++;
-                prefs.save();
-                background.setVisible(false);
-                textTable.setVisible(false);
-                table.setVisible(false);
-            }
-        });
-        buttonAction(buttonNextLevel);
+        if (completedLevel) {
+            buttonNextLevel = new Label("Next Level", skin, "Roboto-Bold-Scaled-2");
+            table.add(buttonNextLevel).row();
+            buttonNextLevel.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    Levels prefs = Levels.instance;
+                    prefs.level++;
+                    prefs.save();
+                    background.setVisible(false);
+                    labelTable.setVisible(false);
+                    table.setVisible(false);
+                }
+            });
+        }
 
-        buttonRepeat = new Label("Replay", skin, "Roboto-Thin-Scaled-2");
-        table.add(buttonRepeat).row();
-        buttonRepeat.addListener(new ClickListener() {
+        buttonReplay = new Label("Replay", skin, font);
+        if (!completedLevel) table.padBottom(25);
+        table.add(buttonReplay).row();
+        buttonReplay.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 background.setVisible(false);
-                textTable.setVisible(false);
+                labelTable.setVisible(false);
                 table.setVisible(false);
             }
         });
-        buttonAction(buttonRepeat);
 
         buttonHome = new Label("Home", skin, "Roboto-Thin-Scaled-2");
         table.add(buttonHome);
         buttonHome.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Levels prefs = Levels.instance;
-                prefs.level++;
-                prefs.save();
+                if (completedLevel) {
+                    Levels prefs = Levels.instance;
+                    prefs.level++;
+                    prefs.save();
+                }
                 background.setVisible(false);
-                textTable.setVisible(false);
+                labelTable.setVisible(false);
                 table.setVisible(false);
                 setupMenu();
             }
         });
-        buttonAction(buttonHome);
 
-
+        buttonAction(table, 0.25f);
         stage.addActor(table);
     }
 
-    private void buttonAction(Label label) {
-        registerAction(label, Actions.sequence(
+    private void buttonAction(Table table, float actionsDelay) {
+        registerAction(table, Actions.sequence(
                 Actions.visible(false),
                 Actions.alpha(0, 0.17f),
                 Actions.delay(actionsDelay),

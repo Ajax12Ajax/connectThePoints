@@ -1,4 +1,4 @@
-#Wed Jan 20 23:40:57 CET 2021
+#Sun Jan 24 00:10:57 CET 2021
 base.0=C\:\\Users\\janst\\Documents\\libGDXproject\\connectThePoints\\android\\build\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
 renamed.0=classes.dex
 path.0=classes.dex

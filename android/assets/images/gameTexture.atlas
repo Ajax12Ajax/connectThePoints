@@ -1,6 +1,6 @@
 
 gameTexture.png
-size: 796,804
+size: 812,804
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
@@ -13,36 +13,43 @@ background
   index: -1
 field-blue
   rotate: false
-  xy: 724, 737
-  size: 70, 65
-  orig: 70, 65
+  xy: 724, 721
+  size: 86, 81
+  orig: 86, 81
   offset: 0, 0
   index: -1
 field-dn
   rotate: false
-  xy: 724, 670
-  size: 70, 65
-  orig: 70, 65
+  xy: 724, 638
+  size: 86, 81
+  orig: 86, 81
+  offset: 0, 0
+  index: -1
+field-gray
+  rotate: false
+  xy: 724, 555
+  size: 86, 81
+  orig: 86, 81
   offset: 0, 0
   index: -1
 field-green
   rotate: false
-  xy: 724, 536
-  size: 70, 65
-  orig: 70, 65
+  xy: 724, 389
+  size: 86, 81
+  orig: 86, 81
   offset: 0, 0
   index: -1
 field-purple
   rotate: false
-  xy: 724, 603
-  size: 70, 65
-  orig: 70, 65
+  xy: 724, 472
+  size: 86, 81
+  orig: 86, 81
   offset: 0, 0
   index: -1
 field-red
   rotate: false
-  xy: 724, 469
-  size: 70, 65
-  orig: 70, 65
+  xy: 724, 306
+  size: 86, 81
+  orig: 86, 81
   offset: 0, 0
   index: -1

@@ -28,7 +28,7 @@ public class Levels {
 
 
     public static String levelName = "FourByFour";
-    int timer = 1;
+    public int timer = 1;
     public int rounds = 1;
 
     public void Level() {
@@ -41,39 +41,39 @@ public class Levels {
             prefs.load();
             switch (prefs.level) {
                 case 1:
-                    timer = 10;
+                    timer = 27;
                     rounds = 3;
                     levelName = "FourByFour";
                     break;
                 case 2:
-                    timer = 7;
+                    timer = 21;
                     rounds = 3;
                     levelName = "FourByFour";
                     break;
                 case 3:
-                    timer = 7;
+                    timer = 20;
                     rounds = 4;
                     levelName = "FourByFour";
                     break;
                 case 4:
-                    timer = 6;
+                    timer = 18;
                     rounds = 4;
                     levelName = "FourByFour";
                     break;
                 case 5:
                 case 6:
-                    timer = 6;
+                    timer = 24;
                     rounds = 5;
                     levelName = "FourByFour";
                     break;
                 case 7:
-                    timer = 5;
+                    timer = 17;
                     rounds = 4;
                     levelName = "FourByFour";
 
                     break;
                 case 8:
-                    timer = 9;
+                    timer = 29;
                     rounds = 2;
                     levelName = "FiveByFive";
                     break;

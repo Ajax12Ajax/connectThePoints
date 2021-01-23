@@ -25,7 +25,7 @@ public class MainScreen extends AbstractGameScreen {
         menuScreen = new MenuScreen();
         levels = new Levels();
 
-        game.setupGame();
+        game.setupGame(true);
         menuScreen.setupMenu();
     }
 
@@ -43,25 +43,25 @@ public class MainScreen extends AbstractGameScreen {
             game.restartButton.setText("");
             game.timerText.setText("");
             game.roundsText.setText("");
-            menuScreen.buttonNextLevel.addListener(new ClickListener() {
+            if (MenuScreen.completedLevel) {
+                menuScreen.buttonNextLevel.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        game.stage.clear();
+                        levels.Level();
+                        game.setupGame(true);
+                        menuScreen.start = true;
+                        game.milliseconds = 0;
+                    }
+                });
+            }
+            menuScreen.buttonReplay.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     game.stage.clear();
-                    levels.Level();
-                    game.setupGame();
+                    game.setupGame(true);
                     menuScreen.start = true;
                     game.milliseconds = 0;
-                    game.seconds = 0;
-                }
-            });
-            menuScreen.buttonRepeat.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    game.stage.clear();
-                    game.setupGame();
-                    menuScreen.start = true;
-                    game.milliseconds = 0;
-                    game.seconds = 0;
                 }
             });
             menuScreen.buttonHome.addListener(new ClickListener() {
@@ -69,9 +69,8 @@ public class MainScreen extends AbstractGameScreen {
                 public void clicked(InputEvent event, float x, float y) {
                     game.stage.clear();
                     levels.Level();
-                    game.setupGame();
+                    game.setupGame(true);
                     game.milliseconds = 0;
-                    game.seconds = 0;
                 }
             });
             game.endlevel = false;

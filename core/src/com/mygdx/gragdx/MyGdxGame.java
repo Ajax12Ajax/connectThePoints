@@ -7,7 +7,6 @@ import com.mygdx.gragdx.screens.MainScreen;
 import com.mygdx.gragdx.util.Preferences;
 
 public class MyGdxGame extends Game {
-    private static final String TAG = MyGdxGame.class.getName();
 
     @Override
     public void create() {
