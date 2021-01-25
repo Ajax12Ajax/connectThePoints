@@ -21,7 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class OptionsMenu {
-    private final Set<Action> animationActions = new HashSet<Action>();
+    private final Set<Action> animationActions = new HashSet<>();
     final Stage stage = new Stage(new ExtendViewport(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT));
 
     private Skin skin;

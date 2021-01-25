@@ -47,6 +47,9 @@ public class MainScreen extends AbstractGameScreen {
                 menuScreen.buttonNextLevel.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
+                        Levels prefs = Levels.instance;
+                        prefs.level++;
+                        prefs.save();
                         game.stage.clear();
                         levels.Level();
                         game.setupGame(true);
@@ -67,6 +70,11 @@ public class MainScreen extends AbstractGameScreen {
             menuScreen.buttonHome.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
+                    if (MenuScreen.completedLevel) {
+                        Levels prefs = Levels.instance;
+                        prefs.level++;
+                        prefs.save();
+                    }
                     game.stage.clear();
                     levels.Level();
                     game.setupGame(true);

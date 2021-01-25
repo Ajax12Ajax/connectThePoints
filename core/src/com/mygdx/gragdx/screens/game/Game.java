@@ -124,14 +124,14 @@ public class Game {
         stage.addActor(restartTable);
 
 
-        if (Levels.levelName.equals("FourByFour")) {
-            fourByFour.create(fields, field, restart);
+        if (Levels.levelName.equals("SixBySix")) {
+            sixBySix.create(fields, field, restart);
         }
         if (Levels.levelName.equals("FiveByFive")) {
             fiveByFive.create(fields, field, restart);
         }
-        if (Levels.levelName.equals("SixBySix")) {
-            sixBySix.create(fields, field, restart);
+        if (Levels.levelName.equals("FourByFour")) {
+            fourByFour.create(fields, field, restart);
         }
         if (restartTimer) seconds = levels.timer;
         restart = true;

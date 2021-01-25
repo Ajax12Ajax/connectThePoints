@@ -30,15 +30,16 @@ public class Levels {
     public static String levelName = "FourByFour";
     public int timer = 1;
     public int rounds = 1;
+    public static int levelStats;
 
     public void Level() {
         Levels prefs = Levels.instance;
         prefs.load();
-        stage = prefs.stage;
-        stage = 1;
+        prefs.stage = 1;
 
-        if (stage == 1) {
-            prefs.load();
+
+        if (prefs.stage == 1) {
+            levelStats = 8;
             switch (prefs.level) {
                 case 1:
                     timer = 27;
@@ -70,7 +71,6 @@ public class Levels {
                     timer = 17;
                     rounds = 4;
                     levelName = "FourByFour";
-
                     break;
                 case 8:
                     timer = 29;
