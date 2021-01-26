@@ -100,20 +100,11 @@ public class MenuScreen {
         }
 
 
-        final Table labelTable = new Table();
-        final Table statsTable = new Table();
-
         final Image background = new Image(skin, "background");
-        background.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                tableMenu(background, labelTable, statsTable);
-                hideStatistics = true;
-            }
-        });
         backgroundStage.addActor(background);
 
 
+        final Table labelTable = new Table();
         labelTable.setFillParent(true);
         labelTable.center();
 
@@ -126,6 +117,7 @@ public class MenuScreen {
         stage.addActor(labelTable);
 
 
+        final Table statsTable = new Table();
         statsTable.setFillParent(true);
         statsTable.center();
         final Levels prefs = Levels.instance;
@@ -140,9 +132,24 @@ public class MenuScreen {
         stage.addActor(statsTable);
 
 
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                background.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        tableMenu(background, labelTable, statsTable);
+                        hideStatistics = true;
+                    }
+                });
+            }
+        }, 1.8f);
+
+
         buttonNextLevel = new Label("Next Level", skin, "Roboto-Bold-Scaled-2");
         buttonReplay = new Label("Replay", skin, font);
         buttonHome = new Label("Home", skin, "Roboto-Thin-Scaled-2");
+
 
         Timer.schedule(new Timer.Task() {
             @Override
@@ -152,7 +159,7 @@ public class MenuScreen {
                     int level2 = prefs.level + 1;
                     final int stage2 = prefs.stage + 1;
 
-                    if (level2 == Levels.levelStats+1) {
+                    if (level2 == Levels.levelStats + 1) {
                         registerAction(statsTable, Actions.sequence(
                                 Actions.alpha(0, 0.17f),
                                 Actions.alpha(1, 0.17f, Interpolation.exp5Out)));
@@ -175,7 +182,6 @@ public class MenuScreen {
 
     private void tableMenu(final Image background, final Table labelTable, final Table statsTable) {
         Gdx.input.setInputProcessor(stage);
-        statsTable.setVisible(false);
 
         final Table table = new Table();
         table.setFillParent(true);
@@ -215,6 +221,7 @@ public class MenuScreen {
             }
         });
 
+        statsTable.setVisible(false);
         buttonAction(table, 0.10f);
         stage.addActor(table);
     }

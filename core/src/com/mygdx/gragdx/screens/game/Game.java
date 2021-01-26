@@ -68,7 +68,6 @@ public class Game {
 
 
     public void setupGame(Boolean restartTimer) {
-        restart = true;
         levels.Level();
 
         field = new Image[Fields.quantity + 1];
@@ -134,6 +133,7 @@ public class Game {
         if (Levels.levelName.equals("FourByFour")) {
             fourByFour.create(fields, field, restart);
         }
+        restart = true;
         if (restartTimer) seconds = levels.timer;
     }
 
