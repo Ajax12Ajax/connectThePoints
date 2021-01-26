@@ -31,12 +31,11 @@ public class Levels {
     public int timer = 1;
     public int rounds = 1;
     public static int levelStats;
+    public static int levelStats2;
 
     public void Level() {
         Levels prefs = Levels.instance;
         prefs.load();
-        prefs.stage = 1;
-
 
         if (prefs.stage == 1) {
             levelStats = 8;
@@ -73,35 +72,66 @@ public class Levels {
                     levelName = "FourByFour";
                     break;
                 case 8:
-                    timer = 29;
-                    rounds = 2;
+                    timer = 22;
+                    rounds = 1;
                     levelName = "FiveByFive";
+                    levelStats2 = 9;
                     break;
                 case 9:
+                    prefs.stage = 2;
                     prefs.level = 1;
                     prefs.save();
                     break;
             }
         }
-        if (stage == 2) {
-            switch (level) {
+        if (prefs.stage == 2) {
+            levelStats = 9;
+            switch (prefs.level) {
                 case 1:
+                    timer = 17;
+                    rounds = 4;
+                    levelName = "FourByFour";
+                    break;
                 case 2:
-                case 4:
-                case 5:
-                case 6:
+                    timer = 16;
+                    rounds = 4;
                     levelName = "FourByFour";
                     break;
                 case 3:
+                    timer = 17;
+                    rounds = 1;
+                    levelName = "FiveByFive";
+                    break;
+                case 4:
+                case 6:
+                    timer = 15;
+                    rounds = 4;
+                    levelName = "FourByFour";
+                    break;
+                case 5:
+                    timer = 12;
+                    rounds = 3;
+                    levelName = "FourByFour";
+                    break;
                 case 7:
+                    timer = 21;
+                    rounds = 2;
+                    levelName = "FiveByFive";
+                    break;
                 case 8:
+                    timer = 20;
+                    rounds = 2;
                     levelName = "FiveByFive";
                     break;
                 case 9:
-                    levelName = "SixBySix";
+                    timer = 15;
+                    rounds = 1;
+                    levelName = "FiveByFive";
+                    levelStats = 10;
                     break;
                 case 10:
                     prefs.level = 1;
+                    prefs.stage = 3;
                     prefs.save();
                     break;
             }
@@ -119,13 +149,20 @@ public class Levels {
                     levelName = "FiveByFive";
                     break;
                 case 9:
-                case 10:
                     levelName = "SixBySix";
+                    break;
+                case 10:
+                    prefs.level = 1;
+                    prefs.stage = 4;
+                    prefs.save();
                     break;
             }
         }
         if (stage == 4) {
             switch (level) {
+                case 1:
+                case 2:
+                case 3:
                 case 4:
                 case 5:
                 case 6:
@@ -133,27 +170,55 @@ public class Levels {
                 case 8:
                     levelName = "FiveByFive";
                     break;
-                case 1:
-                case 2:
-                case 3:
+                case 9:
                     levelName = "SixBySix";
+                    break;
+                case 10:
+                    prefs.level = 1;
+                    prefs.stage = 5;
+                    prefs.save();
                     break;
             }
         }
         if (stage == 5) {
             switch (level) {
-                case 7:
-                case 8:
-                case 9:
-                    levelName = "FourByFour";
-                    break;
                 case 1:
                 case 2:
                 case 3:
                 case 4:
                 case 5:
                 case 6:
+                case 7:
+                case 8:
                     levelName = "FiveByFive";
+                    break;
+                case 9:
+                    levelName = "SixBySix";
+                    break;
+                case 10:
+                    prefs.level = 9;
+                    prefs.save();
+                    break;
+            }
+        }
+        if (stage == 6) {
+            switch (level) {
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
+                case 7:
+                case 8:
+                    levelName = "FiveByFive";
+                    break;
+                case 9:
+                    levelName = "SixBySix";
+                    break;
+                case 10:
+                    prefs.level = 9;
+                    prefs.save();
                     break;
             }
         }

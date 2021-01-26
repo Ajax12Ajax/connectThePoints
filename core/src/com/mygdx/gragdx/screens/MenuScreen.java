@@ -41,6 +41,7 @@ public class MenuScreen {
     public Boolean start = false;
     static public Boolean completedLevel;
     Boolean hideStatistics = false;
+    float delay = 3.5f;
 
 
     public MenuScreen() {
@@ -89,6 +90,7 @@ public class MenuScreen {
 
     public void setupLevelEnd() {
         Gdx.input.setInputProcessor(backgroundStage);
+        delay = 3.5f;
         hideStatistics = false;
         String text = "Completed";
         String font = "Roboto-Thin-Scaled-2";
@@ -126,7 +128,7 @@ public class MenuScreen {
 
         statsTable.setFillParent(true);
         statsTable.center();
-        Levels prefs = Levels.instance;
+        final Levels prefs = Levels.instance;
         prefs.load();
 
         final Label levelLabel = new Label("Level  " + prefs.level + " /" + Levels.levelStats, skin, "Roboto-Thin-Scaled-2");
@@ -146,20 +148,29 @@ public class MenuScreen {
             @Override
             public void run() {
                 if (completedLevel) {
-                    Levels prefs = Levels.instance;
                     prefs.load();
                     int level2 = prefs.level + 1;
-                    levelLabel.setText("Level  " + level2 + " /" + Levels.levelStats);
+                    final int stage2 = prefs.stage + 1;
+
+                    if (level2 == Levels.levelStats+1) {
+                        registerAction(statsTable, Actions.sequence(
+                                Actions.alpha(0, 0.17f),
+                                Actions.alpha(1, 0.17f, Interpolation.exp5Out)));
+                        levelLabel.setText("Level  " + 1 + " /" + Levels.levelStats2);
+                        stageLabel.setText("Stage  " + stage2 + " /" + "6");
+                        delay = 6;
+                    } else
+                        levelLabel.setText("Level  " + level2 + " /" + Levels.levelStats);
                 }
             }
-        }, 1);
+        }, 1.25f);
 
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
                 if (!hideStatistics) tableMenu(background, labelTable, statsTable);
             }
-        }, 3);
+        }, delay);
     }
 
     private void tableMenu(final Image background, final Table labelTable, final Table statsTable) {
