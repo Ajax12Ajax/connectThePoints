@@ -247,7 +247,7 @@ public class Game {
         if (!touched) {
             reset();
             if (fields.getConnected("Check1") && fields.getConnected("Check2") && fields.getConnected("Check3") && fields.getConnected("Check4")) {
-                if ((fields.getConnected("Check5") && Levels.levelName.equals("FiveByFive")) || Levels.levelName.equals("FourByFour")) {
+                if ((fields.getConnected("Check5") && (Levels.levelName.equals("FiveByFive") || Levels.levelName.equals("SixBySix"))) || Levels.levelName.equals("FourByFour")) {
                     rounds++;
                     if (rounds == levels.rounds) {
                         MenuScreen.completedLevel = true;

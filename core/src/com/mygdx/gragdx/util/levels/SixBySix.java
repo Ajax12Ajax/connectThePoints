@@ -10,22 +10,24 @@ public class SixBySix {
     public void create(Fields fields, Image[] field, Boolean restart) {
         if (restart)
             name = MathUtils.random(1, 1);
-        for (int i = 0; i < 8; i++) {
+
+        for (int i = 0; i < 10; i++) {
+            fields.setStartingField(field(name, i));
+
             if (i <= 1) {
-                fields.setStartingField(field(name, i));
                 fields.setCheck(field(name, i), field[field(name, i)], true, "Check1");
             }
             if (i >= 2 && i <= 3) {
-                fields.setStartingField(field(name, i));
                 fields.setCheck(field(name, i), field[field(name, i)], true, "Check2");
             }
             if (i >= 4 && i <= 5) {
-                fields.setStartingField(field(name, i));
                 fields.setCheck(field(name, i), field[field(name, i)], true, "Check3");
             }
-            if (i >= 6) {
-                fields.setStartingField(field(name, i));
+            if (i >= 6 && i <= 7) {
                 fields.setCheck(field(name, i), field[field(name, i)], true, "Check4");
+            }
+            if (i >= 8) {
+                fields.setCheck(field(name, i), field[field(name, i)], true, "Check5");
             }
         }
     }
@@ -35,7 +37,7 @@ public class SixBySix {
         int[] field = new int[8];
 
         if (name == 1) {
-            field = new int[]{0, 21, 16, 18, 7, 24, 4, 19};
+            field = new int[]{0, 30, 1, 31, 2, 32, 3, 33, 4, 34};
         }
 
         return field[number];
