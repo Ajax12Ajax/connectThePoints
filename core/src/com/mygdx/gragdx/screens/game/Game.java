@@ -247,15 +247,17 @@ public class Game {
         if (!touched) {
             reset();
             if (fields.getConnected("Check1") && fields.getConnected("Check2") && fields.getConnected("Check3") && fields.getConnected("Check4")) {
-                rounds++;
-                if (rounds == levels.rounds) {
-                    MenuScreen.completedLevel = true;
-                    menuScreen.start = false;
-                    endlevel = true;
-                    rounds = 0;
-                } else {
-                    stage.clear();
-                    setupGame(false);
+                if ((fields.getConnected("Check5") && Levels.levelName.equals("FiveByFive")) || Levels.levelName.equals("FourByFour")) {
+                    rounds++;
+                    if (rounds == levels.rounds) {
+                        MenuScreen.completedLevel = true;
+                        menuScreen.start = false;
+                        endlevel = true;
+                        rounds = 0;
+                    } else {
+                        stage.clear();
+                        setupGame(false);
+                    }
                 }
             }
         }

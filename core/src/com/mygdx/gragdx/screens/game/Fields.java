@@ -18,15 +18,18 @@ public class Fields {
     Boolean[] Check2 = new Boolean[quantity + 1];
     Boolean[] Check3 = new Boolean[quantity + 1];
     Boolean[] Check4 = new Boolean[quantity + 1];
+    Boolean[] Check5 = new Boolean[quantity + 1];
 
     Boolean[] Connected1 = new Boolean[3];
     Boolean[] Connected2 = new Boolean[3];
     Boolean[] Connected3 = new Boolean[3];
     Boolean[] Connected4 = new Boolean[3];
+    Boolean[] Connected5 = new Boolean[3];
     public int i1 = 1;
     public int i2 = 1;
     public int i3 = 1;
     public int i4 = 1;
+    public int i5 = 1;
 
     public Fields() {
         skin = new Skin(
@@ -42,6 +45,7 @@ public class Fields {
         Check2 = new Boolean[quantity + 1];
         Check3 = new Boolean[quantity + 1];
         Check4 = new Boolean[quantity + 1];
+        Check5 = new Boolean[quantity + 1];
 
         for (int i = 0; i < quantity; i++) {
             startingField[i] = false;
@@ -50,6 +54,7 @@ public class Fields {
             Check2[i] = false;
             Check3[i] = false;
             Check4[i] = false;
+            Check5[i] = false;
         }
 
         for (int i = 0; i < 3; i++) {
@@ -57,6 +62,7 @@ public class Fields {
             Connected2[i] = false;
             Connected3[i] = false;
             Connected4[i] = false;
+            Connected5[i] = false;
         }
     }
 
@@ -81,6 +87,10 @@ public class Fields {
             Check4[i] = check;
             image.setDrawable(skin, "field-green");
         }
+        if (Check.equals("Check5")) {
+            Check5[i] = check;
+            image.setDrawable(skin, "field-gray");
+        }
     }
 
     public Boolean getCheck(int i, String Check) {
@@ -101,6 +111,9 @@ public class Fields {
         if (Check.equals("Check4")) {
             check[i] = Check4[i];
         }
+        if (Check.equals("Check5")) {
+            check[i] = Check5[i];
+        }
         return check[i];
     }
 
@@ -120,6 +133,9 @@ public class Fields {
         }
         if (Check4[i]) {
             check = "Check4";
+        }
+        if (Check5[i]) {
+            check = "Check5";
         }
         return check;
     }
@@ -163,44 +179,12 @@ public class Fields {
                     Connected4[i4] = true;
                     i4++;
                 }
-            }
-        } else if (!check) {
-            if (getStartingField(i)) {
-                if (Check.equals("Check1")) {
-                    if (i1 == 2) {
-                        i1 = 1;
+                if (Check.equals("Check5")) {
+                    if (i5 == 3) {
+                        i5 = 1;
                     }
-                    if (i1 == 3) {
-                        i1 = 2;
-                    }
-                    Connected1[i1] = false;
-                }
-                if (Check.equals("Check2")) {
-                    if (i2 == 2) {
-                        i2 = 1;
-                    }
-                    if (i2 == 3) {
-                        i2 = 2;
-                    }
-                    Connected2[i2] = false;
-                }
-                if (Check.equals("Check3")) {
-                    if (i3 == 2) {
-                        i3 = 1;
-                    }
-                    if (i3 == 3) {
-                        i3 = 2;
-                    }
-                    Connected3[i3] = false;
-                }
-                if (Check.equals("Check4")) {
-                    if (i4 == 2) {
-                        i4 = 1;
-                    }
-                    if (i4 == 3) {
-                        i4 = 2;
-                    }
-                    Connected4[i4] = false;
+                    Connected5[i5] = true;
+                    i5++;
                 }
             }
         }
@@ -219,6 +203,9 @@ public class Fields {
         }
         if (Check.equals("Check4")) {
             Connected = Connected4[1] && Connected4[2];
+        }
+        if (Check.equals("Check5")) {
+            Connected = Connected5[1] && Connected5[2];
         }
         return Connected;
     }
