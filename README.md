@@ -1,2 +1,2 @@
-# Connect The Points
+# Connection
 by Ajax12Ajax 
