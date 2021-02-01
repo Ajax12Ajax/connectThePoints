@@ -11,11 +11,11 @@ public class SixBySix {
 
     public void create(Fields fields, Image[] field, Boolean restart) {
         if (restart) {
-            name = MathUtils.random(1, 40);
+            name = MathUtils.random(1, 6);
             if (namelast == name)
-                name = MathUtils.random(1, 40);
+                name = MathUtils.random(1, 6);
             if (namelast2 == name)
-                name = MathUtils.random(1, 40);
+                name = MathUtils.random(1, 6);
         }
 
         for (int i = 0; i < 10; i++) {

@@ -11,11 +11,11 @@ public class FiveByFive {
 
     public void create(Fields fields, Image[] field, Boolean restart) {
         if (restart) {
-            name = MathUtils.random(1, 40);
+            name = MathUtils.random(1, 4);
             if (namelast == name)
-                name = MathUtils.random(1, 40);
+                name = MathUtils.random(1, 4);
             if (namelast2 == name)
-                name = MathUtils.random(1, 40);
+                name = MathUtils.random(1, 4);
         }
 
         for (int i = 0; i < 10; i++) {
@@ -50,6 +50,12 @@ public class FiveByFive {
         }
         if (name == 2) {
             field = new int[]{0, 11, 7, 15, 20, 18, 22, 24, 19, 4};
+        }
+        if (name == 3) {
+            field = new int[]{20, 23, 8, 24, 13, 15, 4, 5, 7, 10};
+        }
+        if (name == 4) {
+            field = new int[]{8, 24, 15, 23, 1, 10, 6, 17, 2, 9};
         }
 
         return field[number];

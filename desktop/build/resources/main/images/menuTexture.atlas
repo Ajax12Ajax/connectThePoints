@@ -1,8 +1,8 @@
 
 menuTexture.png
-size: 1253,816
+size: 1253, 816
 format: RGBA8888
-filter: Linear,Linear
+filter: Linear, Linear
 repeat: none
 Roboto-Bold
   rotate: false
@@ -29,7 +29,6 @@ slider
   rotate: false
   xy: 897, 289
   size: 8, 8
-  split: 2, 2, 2, 2
   orig: 8, 8
   offset: 0, 0
   index: -1

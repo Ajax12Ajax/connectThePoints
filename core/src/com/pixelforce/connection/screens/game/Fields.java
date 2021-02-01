@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.pixelforce.connection.util.Constants;
 
 public class Fields {
-    private final Skin skin;
+    private Skin skin;
 
     public static int quantity = 16;
     public static int row = 4;
@@ -31,14 +31,12 @@ public class Fields {
     public int i4 = 1;
     public int i5 = 1;
 
-    public Fields() {
+
+    public void reset() {
         skin = new Skin(
                 Gdx.files.internal(Constants.SKIN_GAME_UI),
                 new TextureAtlas(Constants.TEXTURE_ATLAS_GAME_UI));
-    }
 
-
-    public void reset() {
         startingField = new Boolean[quantity + 1];
         Check0 = new Boolean[quantity + 1];
         Check1 = new Boolean[quantity + 1];

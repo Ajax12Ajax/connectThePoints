@@ -23,15 +23,15 @@ public class Game {
     private final Stage backgroundStage = new Stage(new FillViewport(516, 684));
     public final Stage stage = new Stage(new ExtendViewport(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT));
 
-    private final Skin skinGame;
+    private Skin skinGame;
     private final Skin skinMenu;
 
     private final Fields fields;
     private final Levels levels;
     private final MenuScreen menuScreen;
-    private final FourByFour fourByFour;
-    private final FiveByFive fiveByFive;
-    private final SixBySix sixBySix;
+    private final FourByFour fourByFour = new FourByFour();
+    private final FiveByFive fiveByFive = new FiveByFive();
+    private final SixBySix sixBySix = new SixBySix();
 
     public Label timerText;
     public Label roundsText;
@@ -54,13 +54,7 @@ public class Game {
         fields = new Fields();
         levels = new Levels();
         menuScreen = new MenuScreen();
-        fourByFour = new FourByFour();
-        fiveByFive = new FiveByFive();
-        sixBySix = new SixBySix();
 
-        skinGame = new Skin(
-                Gdx.files.internal(Constants.SKIN_GAME_UI),
-                new TextureAtlas(Constants.TEXTURE_ATLAS_GAME_UI));
         skinMenu = new Skin(
                 Gdx.files.internal(Constants.SKIN_MENU_UI),
                 new TextureAtlas(Constants.TEXTURE_ATLAS_MENU_UI));
@@ -69,6 +63,9 @@ public class Game {
 
     public void setupGame(Boolean restartTimer) {
         levels.Level();
+        skinGame = new Skin(
+                Gdx.files.internal(Constants.SKIN_GAME_UI),
+                new TextureAtlas(Constants.TEXTURE_ATLAS_GAME_UI));
 
         field = new Image[Fields.quantity + 1];
         fields.reset();
