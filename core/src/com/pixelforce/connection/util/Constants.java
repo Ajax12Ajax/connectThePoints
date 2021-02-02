@@ -6,7 +6,7 @@ public class Constants {
     // GUI Height
     public static final float VIEWPORT_GUI_HEIGHT = 1100.0f;
 
-    public static String TEXTURE_ATLAS_GAME_UI = "images/gameTexture1.atlas";
+    public static String TEXTURE_ATLAS_GAME_UI = "images/gameTexture/gameTexture1.atlas";
 
     public static final String SKIN_GAME_UI = "images/gameTexture.json";
 

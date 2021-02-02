@@ -39,7 +39,7 @@ public class Levels {
 
         if (prefs.stage == 1) {
             levelStats = 8;
-            Constants.TEXTURE_ATLAS_GAME_UI = "images/gameTexture1.atlas";
+            Constants.TEXTURE_ATLAS_GAME_UI = "images/gameTexture/gameTexture1.atlas";
             switch (prefs.level) {
                 case 1:
                     timer = 27;
@@ -87,7 +87,7 @@ public class Levels {
         }
         if (prefs.stage == 2) {
             levelStats = 9;
-            Constants.TEXTURE_ATLAS_GAME_UI = "images/gameTexture2.atlas";
+            Constants.TEXTURE_ATLAS_GAME_UI = "images/gameTexture/gameTexture2.atlas";
             switch (prefs.level) {
                 case 1:
                     timer = 17;

@@ -29,6 +29,7 @@ slider
   rotate: false
   xy: 897, 289
   size: 8, 8
+  split: 2, 2, 2, 2
   orig: 8, 8
   offset: 0, 0
   index: -1
