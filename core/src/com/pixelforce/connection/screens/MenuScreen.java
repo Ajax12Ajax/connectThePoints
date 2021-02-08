@@ -1,6 +1,7 @@
 package com.pixelforce.connection.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.pixelforce.connection.util.AudioManager;
 import com.pixelforce.connection.util.Constants;
 import com.pixelforce.connection.util.levels.Levels;
 
@@ -31,6 +33,8 @@ public class MenuScreen {
     private final OptionsMenu optionsMenu;
 
     Skin skin;
+    public final Sound completeLevelS;
+    public final Sound startLevelS;
 
     Label buttonStart;
     Label buttonOptions;
@@ -51,10 +55,13 @@ public class MenuScreen {
         skin = new Skin(
                 Gdx.files.internal(Constants.SKIN_MENU_UI),
                 new TextureAtlas(Constants.TEXTURE_ATLAS_MENU_UI));
+        completeLevelS = Gdx.audio.newSound(Gdx.files.internal("sounds/completeLevel.wav"));
+        startLevelS = Gdx.audio.newSound(Gdx.files.internal("sounds/startLevel.wav"));
     }
 
 
     public void setupMenu() {
+        AudioManager.instance.onSettingsUpdated();
         final Image background = new Image(skin, "background");
         backgroundStage.addActor(background);
 
@@ -71,6 +78,7 @@ public class MenuScreen {
                 table.setVisible(false);
                 background.setVisible(false);
                 start = true;
+                AudioManager.instance.play(startLevelS);
             }
         });
 
@@ -89,6 +97,7 @@ public class MenuScreen {
     }
 
     public void setupLevelEnd() {
+        AudioManager.instance.play(completeLevelS);
         Gdx.input.setInputProcessor(backgroundStage);
         delay = 3.5f;
         hideStatistics = false;
@@ -195,6 +204,7 @@ public class MenuScreen {
                     background.setVisible(false);
                     labelTable.setVisible(false);
                     table.setVisible(false);
+                    AudioManager.instance.play(startLevelS);
                 }
             });
         }

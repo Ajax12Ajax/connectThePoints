@@ -1,6 +1,7 @@
 package com.pixelforce.connection.util;
 
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 
 public class AudioManager {
     public static final AudioManager instance = new AudioManager();
@@ -10,6 +11,10 @@ public class AudioManager {
 
     // singleton: prevent instantiation from other classes
     private AudioManager() { }
+
+    public void play (Sound sound) {
+        sound.play(0.7f, 1, 0);
+    }
 
     public void play (Music music) {
         stopMusic();

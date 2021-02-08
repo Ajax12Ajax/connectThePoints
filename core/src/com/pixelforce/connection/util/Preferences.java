@@ -7,7 +7,7 @@ public class Preferences {
     public static final Preferences instance = new Preferences();
     public boolean music;
     public float volMusic;
-    private com.badlogic.gdx.Preferences prefs;
+    private final com.badlogic.gdx.Preferences prefs;
 
     // singleton: prevent instantiation from other classes
     private Preferences() {
@@ -15,8 +15,8 @@ public class Preferences {
     }
 
     public void load() {
-        music = prefs.getBoolean("music", true);
-        volMusic = MathUtils.clamp(prefs.getFloat("volMusic", 0.5f), 0.0f, 1.0f);
+        volMusic = MathUtils.clamp(prefs.getFloat("volMusic", 1.0f), 0.0f, 1.0f);
+        music = prefs.getBoolean("music", false);
     }
 
     public void save() {
