@@ -129,7 +129,7 @@ public class Levels {
                     timer = 15;
                     rounds = 1;
                     levelName = "FiveByFive";
-                    levelStats = 10;
+                    levelStats2 = 9;
                     break;
                 case 10:
                     prefs.level = 1;
@@ -138,20 +138,51 @@ public class Levels {
                     break;
             }
         }
-        if (stage == 3) {
-            switch (level) {
+        if (prefs.stage == 3) {
+            levelStats = 9;
+            Constants.TEXTURE_ATLAS_GAME_UI = "images/gameTexture/gameTexture3.atlas";
+            switch (prefs.level) {
                 case 1:
+                    timer = 17;
+                    rounds = 4;
+                    levelName = "FourByFour";
+                    break;
                 case 2:
+                    timer = 16;
+                    rounds = 4;
+                    levelName = "FourByFour";
+                    break;
                 case 3:
+                    timer = 17;
+                    rounds = 1;
+                    levelName = "FiveByFive";
+                    break;
                 case 4:
-                case 5:
                 case 6:
+                    timer = 15;
+                    rounds = 4;
+                    levelName = "FourByFour";
+                    break;
+                case 5:
+                    timer = 12;
+                    rounds = 3;
+                    levelName = "FourByFour";
+                    break;
                 case 7:
+                    timer = 21;
+                    rounds = 2;
+                    levelName = "FiveByFive";
+                    break;
                 case 8:
+                    timer = 20;
+                    rounds = 2;
                     levelName = "FiveByFive";
                     break;
                 case 9:
-                    levelName = "SixBySix";
+                    timer = 15;
+                    rounds = 1;
+                    levelName = "FiveByFive";
+                    levelStats2 = 7;
                     break;
                 case 10:
                     prefs.level = 1;
@@ -160,22 +191,43 @@ public class Levels {
                     break;
             }
         }
-        if (stage == 4) {
-            switch (level) {
+        if (prefs.stage == 4) {
+            levelStats = 7;
+            Constants.TEXTURE_ATLAS_GAME_UI = "images/gameTexture/gameTexture4.atlas";
+            switch (prefs.level) {
                 case 1:
+                    timer = 17;
+                    rounds = 4;
+                    levelName = "FourByFour";
+                    break;
                 case 2:
+                    timer = 16;
+                    rounds = 4;
+                    levelName = "FourByFour";
+                    break;
                 case 3:
-                case 4:
-                case 5:
-                case 6:
-                case 7:
-                case 8:
+                    timer = 17;
+                    rounds = 1;
                     levelName = "FiveByFive";
                     break;
-                case 9:
-                    levelName = "SixBySix";
+                case 4:
+                case 6:
+                    timer = 15;
+                    rounds = 4;
+                    levelName = "FourByFour";
                     break;
-                case 10:
+                case 5:
+                    timer = 12;
+                    rounds = 3;
+                    levelName = "FourByFour";
+                    break;
+                case 7:
+                    timer = 21;
+                    rounds = 2;
+                    levelName = "FiveByFive";
+                    levelStats2 = 9;
+                    break;
+                case 8:
                     prefs.level = 1;
                     prefs.stage = 5;
                     prefs.save();

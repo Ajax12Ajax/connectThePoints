@@ -268,11 +268,17 @@ public class Game {
                     fields.setCheck(i, field[i], false, "Check2");
                     fields.setCheck(i, field[i], false, "Check3");
                     fields.setCheck(i, field[i], false, "Check4");
+                    if (Levels.levelName.equals("FiveByFive") || Levels.levelName.equals("SixBySix")) {
+                        fields.setCheck(i, field[i], false, "Check5");
+                    }
                     fields.setCheck(i, field[i], true, "Check0");
                     fields.i1 = 1;
                     fields.i2 = 1;
                     fields.i3 = 1;
                     fields.i4 = 1;
+                    if (Levels.levelName.equals("FiveByFive") || Levels.levelName.equals("SixBySix")) {
+                        fields.i5 = 1;
+                    }
                 }
             }
         }
