@@ -225,7 +225,7 @@ public class Levels {
                     timer = 21;
                     rounds = 2;
                     levelName = "FiveByFive";
-                    levelStats2 = 9;
+                    levelStats2 = 1;
                     break;
                 case 8:
                     prefs.level = 1;
@@ -234,44 +234,36 @@ public class Levels {
                     break;
             }
         }
-        if (stage == 5) {
-            switch (level) {
+        if (prefs.stage == 5) {
+            levelStats = 1;
+            Constants.TEXTURE_ATLAS_GAME_UI = "images/gameTexture/gameTexture5.atlas";
+            switch (prefs.level) {
                 case 1:
+                    timer = 21;
+                    rounds = 2;
+                    levelName = "FourByFour";
+                    levelStats2 = 1;
+                    break;
                 case 2:
-                case 3:
-                case 4:
-                case 5:
-                case 6:
-                case 7:
-                case 8:
-                    levelName = "FiveByFive";
-                    break;
-                case 9:
-                    levelName = "SixBySix";
-                    break;
-                case 10:
-                    prefs.level = 9;
+                    prefs.level = 1;
+                    prefs.stage = 6;
                     prefs.save();
                     break;
             }
         }
-        if (stage == 6) {
-            switch (level) {
+        if (prefs.stage == 6) {
+            levelStats = 1;
+            Constants.TEXTURE_ATLAS_GAME_UI = "images/gameTexture/gameTexture6.atlas";
+            switch (prefs.level) {
                 case 1:
+                    timer = 21;
+                    rounds = 2;
+                    levelName = "FourByFour";
+                    levelStats2 = 9;
+                    break;
                 case 2:
-                case 3:
-                case 4:
-                case 5:
-                case 6:
-                case 7:
-                case 8:
-                    levelName = "FiveByFive";
-                    break;
-                case 9:
-                    levelName = "SixBySix";
-                    break;
-                case 10:
-                    prefs.level = 9;
+                    prefs.level = 1;
+                    prefs.stage = 5;
                     prefs.save();
                     break;
             }

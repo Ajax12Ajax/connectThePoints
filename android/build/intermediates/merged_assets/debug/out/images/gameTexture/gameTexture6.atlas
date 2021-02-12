@@ -1,0 +1,55 @@
+
+gameTexture6.png
+size: 812, 804
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+background
+  rotate: false
+  xy: 2, 2
+  size: 720, 800
+  orig: 720, 800
+  offset: 0, 0
+  index: -1
+field-blue
+  rotate: false
+  xy: 724, 721
+  size: 86, 81
+  orig: 86, 81
+  offset: 0, 0
+  index: -1
+field-dn
+  rotate: false
+  xy: 724, 638
+  size: 86, 81
+  orig: 86, 81
+  offset: 0, 0
+  index: -1
+field-gray
+  rotate: false
+  xy: 724, 555
+  size: 86, 81
+  orig: 86, 81
+  offset: 0, 0
+  index: -1
+field-green
+  rotate: false
+  xy: 724, 389
+  size: 86, 81
+  orig: 86, 81
+  offset: 0, 0
+  index: -1
+field-purple
+  rotate: false
+  xy: 724, 472
+  size: 86, 81
+  orig: 86, 81
+  offset: 0, 0
+  index: -1
+field-red
+  rotate: false
+  xy: 724, 306
+  size: 86, 81
+  orig: 86, 81
+  offset: 0, 0
+  index: -1
