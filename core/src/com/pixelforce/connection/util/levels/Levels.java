@@ -32,8 +32,10 @@ public class Levels {
     public int rounds = 1;
     public static int levelStats;
     public static int levelStats2;
+    public static boolean emptyFields = false;
 
     public void Level() {
+        emptyFields = false;
         Levels prefs = Levels.instance;
         prefs.load();
 
@@ -209,16 +211,17 @@ public class Levels {
                     timer = 17;
                     rounds = 1;
                     levelName = "FiveByFive";
+                    emptyFields = true;
                     break;
                 case 4:
                 case 6:
                     timer = 15;
-                    rounds = 4;
+                    rounds = 1;
                     levelName = "FourByFour";
                     break;
                 case 5:
                     timer = 12;
-                    rounds = 3;
+                    rounds = 1;
                     levelName = "FourByFour";
                     break;
                 case 7:

@@ -39,7 +39,7 @@ public class FourByFour {
     }
 
 
-    public int field(int name, int number) {
+    private int field(int name, int number) {
         int[] field = new int[8];
 
         if (name == 1) {

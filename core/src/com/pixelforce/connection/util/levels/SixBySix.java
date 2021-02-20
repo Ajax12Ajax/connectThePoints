@@ -42,7 +42,7 @@ public class SixBySix {
     }
 
 
-    public int field(int name, int number) {
+    private int field(int name, int number) {
         int[] field = new int[10];
 
         if (name == 1) {
