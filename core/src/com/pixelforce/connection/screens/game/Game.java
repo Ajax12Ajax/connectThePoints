@@ -41,6 +41,7 @@ public class Game {
     public Boolean endlevel = false;
     Boolean restart = true;
     Boolean touched = false;
+    public int backButtonClicks = 0;
     int[] start1 = new int[3];
     int start2 = 1;
     int lastField;

@@ -1,9 +1,11 @@
 package com.pixelforce.connection.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Timer;
 import com.pixelforce.connection.screens.game.Game;
 import com.pixelforce.connection.util.levels.Levels;
 
@@ -24,6 +26,7 @@ public class MainScreen extends AbstractGameScreen {
         game = new Game();
         menuScreen = new MenuScreen();
         levels = new Levels();
+        Gdx.input.setCatchKey(Input.Keys.BACK, true);
 
         game.setupGame(true);
         menuScreen.setupMenu();
@@ -36,6 +39,7 @@ public class MainScreen extends AbstractGameScreen {
 
         game.draw(deltaTime);
         menuScreen.draw(deltaTime);
+
 
         if (game.endlevel) {
             menuScreen.start = false;
@@ -85,6 +89,21 @@ public class MainScreen extends AbstractGameScreen {
         } else if (menuScreen.start) {
             game.update();
         }
+
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
+            game.backButtonClicks++;
+            if (game.backButtonClicks == 2) {
+                game.backButtonClicks = 0;
+                Gdx.app.exit();
+            }
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    game.backButtonClicks = 0;
+                }
+            }, 3);
+        }
     }
 
 
@@ -97,6 +116,7 @@ public class MainScreen extends AbstractGameScreen {
     @Override
     public void hide() {
         Dispose();
+        Gdx.input.setCatchKey(Input.Keys.BACK, false);
     }
 
     @Override
