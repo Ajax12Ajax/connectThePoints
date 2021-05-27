@@ -38,27 +38,29 @@ public class Levels {
         emptyFields = false;
         Levels prefs = Levels.instance;
         prefs.load();
-
+        
         if (prefs.stage == 1) {
             levelStats = 8;
             Constants.TEXTURE_ATLAS_GAME_UI = "images/gameTexture/gameTexture1.atlas";
             switch (prefs.level) {
                 case 1:
                     timer = 27;
-                    rounds = 3;
-                    levelName = "FourByFour";
+                    rounds = 2;
+                    levelName = "FiveByFive";
                     break;
                 case 2:
                     timer = 21;
-                    rounds = 3;
+                    rounds = 4;
                     levelName = "FourByFour";
                     break;
                 case 3:
                     timer = 20;
-                    rounds = 4;
-                    levelName = "FourByFour";
+                    rounds = 1;
+                    levelName = "SixBySix";
                     break;
                 case 4:
+                    prefs.level = 1;
+                    prefs.save();
                     timer = 18;
                     rounds = 4;
                     levelName = "FourByFour";
@@ -76,7 +78,7 @@ public class Levels {
                     break;
                 case 8:
                     timer = 22;
-                    rounds = 1;
+                    rounds = 2;
                     levelName = "FiveByFive";
                     levelStats2 = 9;
                     break;

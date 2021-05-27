@@ -1,0 +1,4 @@
+com/pixelforce/connection/BuildConfig.java
+ com.pixelforce.connection.BuildConfig
+com/pixelforce/connection/AndroidLauncher.java
+ com.pixelforce.connection.AndroidLauncher

@@ -5,166 +5,372 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.pixelforce.connection.screens.game.Fields;
 
 public class FiveByFive {
-    int name = 0;
-    int namelast = 0;
-    int namelast2 = 0;
+    int[] f1 = new int[10];
+    int[] f2 = new int[10];
+    int[] f3 = new int[10];
+    int[] f4 = new int[10];
+    int[] f5 = new int[10];
 
-    int[] emptyField = new int[10];
+    boolean restart = false;
 
-    public void create(Fields fields, Image[] field, Boolean restart) {
-        if (!Levels.emptyFields) {
-            if (restart) {
-                name = MathUtils.random(1, 27);
-                if (namelast == name)
-                    name = MathUtils.random(1, 27);
-                if (namelast2 == name)
-                    name = MathUtils.random(1, 27);
-            }
-        } else {
-            if (restart) {
-                name = MathUtils.random(1, 2);
-                if (namelast == name)
-                    name = MathUtils.random(1, 2);
-                if (namelast2 == name)
-                    name = MathUtils.random(1, 2);
+    public void create(Fields fields, Image[] field, boolean reset) {
+        if (reset) {
+            f1 = genr();
 
-                name = -name;
-            }
+            f2 = genr(2, 3);
+
+            f3 = genr(3, MathUtils.random(2, 3));
+            restart(fields, field);
+
+            f4 = genr(4, 3);
+            restart(fields, field);
+
+            f5 = genr(5, 3);
+            restart(fields, field);
         }
 
-        for (int i = 0; i < 10; i++) {
-            fields.setStartingField(field(name, i));
 
-            if (i <= 1) {
-                fields.setCheck(field(name, i), field[field(name, i)], true, "Check1");
-            }
-            if (i >= 2 && i <= 3) {
-                fields.setCheck(field(name, i), field[field(name, i)], true, "Check2");
-            }
-            if (i >= 4 && i <= 5) {
-                fields.setCheck(field(name, i), field[field(name, i)], true, "Check3");
-            }
-            if (i >= 6 && i <= 7) {
-                fields.setCheck(field(name, i), field[field(name, i)], true, "Check4");
-            }
-            if (i >= 8) {
-                fields.setCheck(field(name, i), field[field(name, i)], true, "Check5");
+        int emptyFields = 0;
+        for (int i = 0; i < 25; i++) {
+            field[i].setVisible(true);
+            int emptyField = 0;
+            for (int j : f1) if (i != j) emptyField++;
+            for (int j : f2) if (i != j) emptyField++;
+            for (int j : f3) if (i != j) emptyField++;
+            for (int j : f4) if (i != j) emptyField++;
+            for (int j : f5) if (i != j) emptyField++;
+
+            int all = f1.length + f2.length + f3.length + f4.length + f5.length;
+            if (all == emptyField) {
+                emptyFields++;
+                if (Levels.emptyFields)
+                    field[i].setVisible(false);
             }
         }
-        namelast = name;
-        namelast2 = namelast;
-
-        if (Levels.emptyFields) {
-            final Levels prefs = Levels.instance;
-            prefs.load();
-
-            if (emptyField[0] != 99 && prefs.stage >= 4) {
-                for (int i = 0; i < 10; i++) {
-                    if (emptyField[i] != 99) {
-                        field[emptyField[i]].setVisible(false);
-                    } else return;
+        if (reset && !Levels.emptyFields) {
+            if (MathUtils.randomBoolean())
+                if (emptyFields > 2) {
+                    create(fields, field, true);
                 }
+            if (emptyFields >= 5) {
+                create(fields, field, true);
+            }
+        } else if (reset) {
+            if (emptyFields <= 2 || emptyFields >= 5)
+                create(fields, field, true);
+        }
+
+
+        fields.reset();
+        for (int i = 0; i < 25; i++)
+            fields.setCheck(i, field[i], true, "Check0");
+
+        for (int i = 0; i < 5; i++) {
+            String color = "Check1";
+            int[] fm = f1;
+
+            switch (i) {
+                case 1:
+                    color = "Check2";
+                    fm = f2;
+                    break;
+                case 2:
+                    color = "Check3";
+                    fm = f3;
+                    break;
+                case 3:
+                    color = "Check4";
+                    fm = f4;
+                    break;
+                case 4:
+                    color = "Check5";
+                    fm = f5;
+                    break;
+            }
+            for (int t = 0; t < 2; t++) {
+                int ff = fm[0];
+                if (t == 1) ff = fm[fm.length - 1];
+                fields.setStartingField(ff);
+                fields.setCheck(ff, field[ff], true, color);
             }
         }
     }
 
 
-    private int field(int name, int number) {
-        emptyField = new int[]{99};
-        int[] field = new int[10];
+    private int[] genr(int f, int min) {
+        int restarts = 0;
+        int Field = MathUtils.random(0, 24);
+        int steps = MathUtils.random(4, 7);
+        int step = 0;
+        int lastField = 0;
+        boolean up = false;
+        boolean down = false;
+        boolean left = false;
+        boolean right = false;
+        int[] fm = new int[steps];
+        random(f, Field);
 
-        if (name == -1) {
-            field = new int[]{8, 24, 15, 23, 1, 10, 6, 17, 2, 9};
-            emptyField = new int[]{20, 7, 18, 99};
-        }
-        if (name == -2) {
-            field = new int[]{1, 10, 11, 20, 12, 24, 3, 14, 2, 8};
-            emptyField = new int[]{0, 19, 13, 22, 21, 99};
-        }
+        while (step < steps) {
+            int side = MathUtils.random(1, 4);
+
+            switch (side) {
+                case 1:
+                    if (Field - 5 >= 0) {
+                        Field = Field - 5;
+                    }
+                    up = true;
+                    break;
+                case 2:
+                    if (Field - 1 >= 0 && Field != 5 && Field != 10 && Field != 15 && Field != 20) {
+                        Field = Field - 1;
+                    }
+                    left = true;
+                    break;
+                case 3:
+                    if (Field + 5 <= 24) {
+                        Field = Field + 5;
+                    }
+                    down = true;
+                    break;
+                case 4:
+                    if (Field + 1 <= 24 && Field != 4 && Field != 9 && Field != 14 && Field != 19) {
+                        Field = Field + 1;
+                    }
+                    right = true;
+                    break;
+            }
 
 
-        if (name == 1) {
-            field = new int[]{0, 21, 16, 3, 7, 24, 4, 19, 8, 18};
-        }
-        if (name == 2) {
-            field = new int[]{0, 11, 7, 15, 20, 18, 22, 24, 19, 4};
-        }
-        if (name == 3) {
-            field = new int[]{20, 23, 8, 24, 13, 15, 4, 5, 7, 10};
-        }
-        if (name == 4) {
-            field = new int[]{8, 24, 15, 23, 1, 10, 6, 17, 2, 9};
-        }
-        if (name == 5) {
-            field = new int[]{8, 17, 11, 18, 20, 23, 9, 24, 0, 4};
-        }
-        if (name == 6) {
-            field = new int[]{12, 24, 16, 23, 11, 22, 4, 5, 0, 3};
-        }
-        if (name == 7) {
-            field = new int[]{12, 23, 8, 22, 4, 24, 0, 3, 5, 20};
-        }
-        if (name == 8) {
-            field = new int[]{8, 16, 0, 12, 6, 20, 19, 21, 3, 14};
-        }
-        if (name == 9) {
-            field = new int[]{9, 24, 7, 18, 5, 17, 0, 4, 10, 23};
-        }
-        if (name == 10) {
-            field = new int[]{13, 24, 7, 19, 12, 20, 0, 16, 4, 11};
-        }
-        if (name == 11) {
-            field = new int[]{8, 23, 2, 17, 3, 24, 6, 22, 1, 20};
-        }
-        if (name == 12) {
-            field = new int[]{12, 21, 9, 22, 6, 17, 0, 4, 5, 20};
-        }
-        if (name == 13) {
-            field = new int[]{7, 16, 9, 12, 0, 8, 5, 22, 17, 24};
-        }
-        if (name == 14) {
-            field = new int[]{18, 20, 17, 24, 8, 16, 2, 9, 1, 15};
-        }
-        if (name == 15) {
-            field = new int[]{21, 24, 17, 20, 4, 18, 0, 3, 5, 13};
-        }
-        if (name == 16) {
-            field = new int[]{9, 17, 16, 24, 13, 20, 0, 8, 1, 4};
-        }
-        if (name == 17) {
-            field = new int[]{9, 24, 4, 13, 7, 23, 2, 5, 6, 15};
-        }
-        if (name == 18) {
-            field = new int[]{6, 13, 7, 16, 4, 8, 9, 17, 20, 24};
-        }
-        if (name == 19) {
-            field = new int[]{7, 24, 15, 23, 0, 16, 3, 6, 4, 13};
-        }
-        if (name == 20) {
-            field = new int[]{10, 18, 12, 23, 15, 22, 4, 5, 0, 3};
-        }
-        if (name == 21) {
-            field = new int[]{7, 23, 12, 20, 0, 16, 3, 11, 4, 24};
-        }
-        if (name == 22) {
-            field = new int[]{7, 18, 8, 24, 1, 9, 0, 16, 10, 23};
-        }
-        if (name == 23) {
-            field = new int[]{7, 16, 17, 20, 6, 15, 0, 9, 8, 24};
-        }
-        if (name == 24) {
-            field = new int[]{16, 24, 17, 20, 9, 18, 5, 13, 0, 4};
-        }
-        if (name == 25) {
-            field = new int[]{7, 18, 11, 22, 9, 0, 6, 21, 14, 23};
-        }
-        if (name == 26) {
-            field = new int[]{8, 10, 3, 5, 4, 12, 19, 20, 21, 24};
-        }
-        if (name == 27) {
-            field = new int[]{1, 10, 11, 20, 12, 24, 3, 14, 2, 8};
+            if (up && down && left && right) {
+                if (min >= step) {
+                    restarts++;
+                    Field = MathUtils.random(0, 24);
+                    steps = MathUtils.random(4, 7);
+                    step = 0;
+                    lastField = 0;
+                    up = false;
+                    down = false;
+                    left = false;
+                    right = false;
+                    fm = new int[steps];
+                    random(f, Field);
+                } else {
+                    int[] fmf = new int[step];
+                    for (int i = 0; i < fm.length; i++) {
+                        if (step > i)
+                            fmf[i] = fm[i];
+                    }
+                    fm = fmf;
+                    step = steps;
+                }
+            } else if (lastField == Field || sameField(f, fm, Field, step)) {
+                Field = lastField;
+
+            } else {
+                up = false;
+                down = false;
+                left = false;
+                right = false;
+                int wrongField = 0;
+
+                for (int i = 0; i < step; i++) {
+                    if (Field - 1 == fm[i]) {
+                        if (wrongField != 2)
+                            wrongField++;
+                    }
+                    if (Field + 1 == fm[i]) {
+                        if (wrongField != 2)
+                            wrongField++;
+                    }
+                    if (Field - 5 == fm[i]) {
+                        if (wrongField != 2)
+                            wrongField++;
+                    }
+                    if (Field + 5 == fm[i]) {
+                        if (wrongField != 2)
+                            wrongField++;
+                    }
+                }
+
+                if (wrongField == 2) {
+                    step = 0;
+                    up = false;
+                    down = false;
+                    left = false;
+                    right = false;
+                    restarts++;
+                }
+
+                lastField = Field;
+
+                fm[step] = Field;
+
+                step++;
+            }
+            if (restarts == 60) {
+                step = steps;
+                restart = true;
+            }
         }
 
-        return field[number];
+        return fm;
+    }
+
+    private int[] genr() {
+        int Field = MathUtils.random(0, 24);
+        int steps = MathUtils.random(4, 6);
+        int step = 0;
+        int lastField = 0;
+        int[] fm = new int[steps];
+
+        while (step < steps) {
+            int side = MathUtils.random(1, 4);
+            switch (side) {
+                case 1:
+                    if (Field - 5 >= 0) {
+                        Field = Field - 5;
+                    }
+                    break;
+                case 2:
+                    if (Field - 1 >= 0 && Field != 5 && Field != 10 && Field != 15 && Field != 20) {
+                        Field = Field - 1;
+                    }
+                    break;
+                case 3:
+                    if (Field + 5 <= 24) {
+                        Field = Field + 5;
+                    }
+                    break;
+                case 4:
+                    if (Field + 1 <= 24 && Field != 4 && Field != 9 && Field != 14 && Field != 19) {
+                        Field = Field + 1;
+                    }
+                    break;
+            }
+
+            boolean sameField = false;
+            for (int i = 0; i < step; i++) {
+                if (fm[i] == Field) {
+                    sameField = true;
+                    break;
+                }
+            }
+
+            if (lastField == Field || sameField) {
+                Field = lastField;
+            } else {
+                int wrongField = 0;
+
+                for (int i = 0; i < step; i++) {
+                    if (Field - 1 == fm[i]) {
+                        if (wrongField != 2)
+                            wrongField++;
+                    }
+                    if (Field + 1 == fm[i]) {
+                        if (wrongField != 2)
+                            wrongField++;
+                    }
+                    if (Field - 5 == fm[i]) {
+                        if (wrongField != 2)
+                            wrongField++;
+                    }
+                    if (Field + 5 == fm[i]) {
+                        if (wrongField != 2)
+                            wrongField++;
+                    }
+                }
+                if (wrongField == 2)
+                    step = 0;
+
+                lastField = Field;
+                fm[step] = Field;
+                step++;
+            }
+        }
+        return fm;
+    }
+
+
+    private void restart(Fields fields, Image[] field) {
+        if (restart) {
+            restart = false;
+            create(fields, field, true);
+        }
+    }
+
+    private void random(int f, int Field) {
+        if (f == 2) {
+            for (int i = 0; i < f1.length; i++)
+                if (Field == f1[i]) {
+                    Field = MathUtils.random(0, 24);
+                    i = 0;
+                }
+        }
+        if (f == 3) {
+            for (int i = 0; i < f1.length; i++)
+                for (int k = 0; k < f2.length; k++)
+                    if (Field == f2[k] || Field == f1[i]) {
+                        Field = MathUtils.random(0, 24);
+                        k = 0;
+                        i = 0;
+                    }
+        }
+        if (f == 4) {
+            for (int i = 0; i < f1.length; i++)
+                for (int k = 0; k < f2.length; k++)
+                    for (int l = 0; l < f3.length; l++)
+                        if (Field == f1[i] || Field == f2[k] || Field == f3[l]) {
+                            Field = MathUtils.random(0, 24);
+                            k = 0;
+                            i = 0;
+                            l = 0;
+                        }
+        }
+        if (f == 5) {
+            for (int i = 0; i < f1.length; i++)
+                for (int k = 0; k < f2.length; k++)
+                    for (int l = 0; l < f3.length; l++)
+                        for (int u = 0; u < f4.length; u++)
+                            if (Field == f1[i] || Field == f2[k] || Field == f3[l] || Field == f4[u]) {
+                                Field = MathUtils.random(0, 24);
+                                k = 0;
+                                i = 0;
+                                l = 0;
+                                u = 0;
+                            }
+        }
+    }
+
+    private boolean sameField(int f, int[] fm, int Field, int step) {
+        boolean sameField = false;
+        for (int i = 0; i < step; i++)
+            if (fm[i] == Field) {
+                sameField = true;
+                break;
+            }
+        for (int j : f1)
+            if (Field == j) {
+                sameField = true;
+                break;
+            }
+        if (f >= 3)
+            for (int j : f2)
+                if (Field == j) {
+                    sameField = true;
+                    break;
+                }
+        if (f >= 4)
+            for (int j : f3)
+                if (Field == j) {
+                    sameField = true;
+                    break;
+                }
+        if (f == 5)
+            for (int j : f4)
+                if (Field == j) {
+                    sameField = true;
+                    break;
+                }
+        return sameField;
     }
 }

@@ -1,0 +1,2 @@
+com/pixelforce/connection/desktop/DesktopLauncher.java
+ com.pixelforce.connection.desktop.DesktopLauncher

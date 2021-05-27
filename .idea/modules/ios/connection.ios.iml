@@ -15,7 +15,7 @@
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7">
+  <component name="NewModuleRootManager">
     <output url="file://$MODULE_DIR$/../../../ios/build/classes/java/main" />
     <output-test url="file://$MODULE_DIR$/../../../ios/build/classes/java/test" />
     <exclude-output />
@@ -29,17 +29,17 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="connection.core" exported="" />
-    <orderEntry type="library" exported="" name="Gradle: gdx-backend-robovm-1.9.11" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: robovm-rt-2.3.11" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: robovm-cocoatouch-2.3.11" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: gdx-platform-1.9.11-natives-ios" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: gdx-box2d-platform-1.9.11-natives-ios" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: gdx-freetype-platform-1.9.11-natives-ios" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: robovm-objc-2.3.11" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: box2dlights-1.4" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: gdx-box2d-1.9.11" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: gdx-freetype-1.9.11" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: gdx-1.9.11" level="project" />
+    <orderEntry type="module" module-name="connection.core" />
+    <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-backend-robovm:1.9.11" level="project" />
+    <orderEntry type="library" name="Gradle: com.mobidevelop.robovm:robovm-rt:2.3.11" level="project" />
+    <orderEntry type="library" name="Gradle: com.mobidevelop.robovm:robovm-cocoatouch:2.3.11" level="project" />
+    <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-platform:1.9.11:natives-ios" level="project" />
+    <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-box2d-platform:1.9.11:natives-ios" level="project" />
+    <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-freetype-platform:1.9.11:natives-ios" level="project" />
+    <orderEntry type="library" name="Gradle: com.mobidevelop.robovm:robovm-objc:2.3.11" level="project" />
+    <orderEntry type="library" name="Gradle: com.badlogicgames.box2dlights:box2dlights:1.4" level="project" />
+    <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-box2d:1.9.11" level="project" />
+    <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-freetype:1.9.11" level="project" />
+    <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx:1.9.11" level="project" />
   </component>
 </module>
