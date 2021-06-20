@@ -26,8 +26,6 @@ public class OptionsMenu {
 
     private Skin skin;
 
-    private Button backgroundButton;
-    private Table tableTools;
     private Slider slider;
     private Image speaker;
 
@@ -64,7 +62,7 @@ public class OptionsMenu {
         table.left();
 
         // + Background Button
-        backgroundButton = new Button(skin, "background");
+        Button backgroundButton = new Button(skin, "background");
         backgroundButton.setScaleX(55);
         backgroundButton.setColor(1, 1, 1, 0);
         backgroundButton.setVisible(true);
@@ -75,8 +73,7 @@ public class OptionsMenu {
                 loadSettings();
                 AudioManager.instance.onSettingsUpdated();
                 Gdx.input.setInputProcessor(stageT);
-                backgroundButton.setVisible(false);
-                tableTools.setVisible(false);
+                stage.clear();
             }
         });
         table.add(backgroundButton).padBottom(100);
@@ -85,7 +82,7 @@ public class OptionsMenu {
 
 
     private void addToolsTable() {
-        tableTools = new Table();
+        Table tableTools = new Table();
         tableTools.setFillParent(true);
         tableTools.setVisible(true);
         tableTools.bottom();

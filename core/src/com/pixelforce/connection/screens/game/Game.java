@@ -71,6 +71,7 @@ public class Game {
         field = new Image[Fields.quantity + 1];
         fields.reset();
 
+        backgroundStage.clear();
         Image background = new Image(skinGame, "background");
         backgroundStage.addActor(background);
 

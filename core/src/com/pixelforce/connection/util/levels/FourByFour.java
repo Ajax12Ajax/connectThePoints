@@ -1,6 +1,5 @@
 package com.pixelforce.connection.util.levels;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.pixelforce.connection.screens.game.Fields;
@@ -15,65 +14,44 @@ public class FourByFour {
     boolean restart2 = false;
 
     public void create(Fields fields, Image[] field, boolean reset) {
-        Gdx.app.debug("", "1");
         if (reset) {
             f1 = genr();
 
-            Gdx.app.debug("", "2");
             f2 = genr(2);
 
-            Gdx.app.debug("", "3");
             f3 = genr(3);
-            Gdx.app.debug("", "3a");
             restart(fields, field);
-            Gdx.app.debug("", "3b");
 
-            Gdx.app.debug("", "4");
             f4 = genr(4);
-            Gdx.app.debug("", "4a");
             restart(fields, field);
-            Gdx.app.debug("", "4b");
-        }
 
 
-        Gdx.app.debug("", "5");
-        int emptyFields = 0;
-        for (int i = 0; i < 16; i++) {
-            field[i].setVisible(true);
-            int emptyField = 0;
-            for (int j : f1) if (i != j) emptyField++;
-            for (int j : f2) if (i != j) emptyField++;
-            for (int j : f3) if (i != j) emptyField++;
-            for (int j : f4) if (i != j) emptyField++;
+            int emptyFields = 0;
+            for (int i = 0; i < 16; i++) {
+                field[i].setVisible(true);
+                int emptyField = 0;
+                for (int j : f1) if (i != j) emptyField++;
+                for (int j : f2) if (i != j) emptyField++;
+                for (int j : f3) if (i != j) emptyField++;
+                for (int j : f4) if (i != j) emptyField++;
 
-            int all = f1.length + f2.length + f3.length + f4.length;
-            if (all == emptyField) {
-                emptyFields++;
+                int all = f1.length + f2.length + f3.length + f4.length;
+                if (all == emptyField) {
+                    emptyFields++;
+                    around(i);
+                }
             }
-        }
-        Gdx.app.debug("", "6");
-        if (reset) {
-            if (emptyFields >= 1) {
+            if (emptyFields >= 2 || restart) {
+                if (restart) restart = false;
                 create(fields, field, true);
-                Gdx.app.debug("ssssssssssssssssssssssssssssssssssssssssssssssss", "sssssssssssssssssssssssssssssssssssssssssssssssssssssssss");
-
-
-
-
-                // nwm jak ale zmnimalizować puste pola
-
-
-
-
-
             }
         }
-        Gdx.app.debug("", "7");
+
+
 
         fields.reset();
         for (int i = 0; i < 16; i++)
             fields.setCheck(i, field[i], true, "Check0");
-        Gdx.app.debug("", "8");
 
         for (int i = 0; i < 4; i++) {
             String color = "Check1";
@@ -100,41 +78,27 @@ public class FourByFour {
                 fields.setCheck(ff, field[ff], true, color);
             }
         }
-        Gdx.app.debug("", "9");
     }
 
 
-    // dodać te sprawdzanie by dowiedzieć się w którym momencie zaczyna sie pętlować
-    //                                                          w randomie też dodać by bardziej go przeszukać
-
-
     private int[] genr(int f) {
-
-
-        // zmienić system wybierania pola startowego na od najblisze by zmniejszyć liczbe powtórzeń spowodowanych brakiem wypełnienia pola
-        //                                            wogule jakoś zrobić by nie było pustych pól
-
-
         int restarts = 0;
         int Field = MathUtils.random(0, 15);
         int steps = 6;
         int step = 0;
-        int lastField = 0;
         boolean up = false;
         boolean down = false;
         boolean left = false;
         boolean right = false;
         int[] fm = new int[steps];
-        Gdx.app.debug("F" + f, "1");
         Field = random(f, Field);
+        int lastField = Field;
+        fm[step] = Field;
+        step++;
         if (restart2) {
-            Gdx.app.debug("F" + f, "1a");
             step = steps;
-            Gdx.app.debug("F" + f, "1b");
             restart = true;
-            Gdx.app.debug("F" + f, "1c");
         }
-        Gdx.app.debug("F" + f, "2");
 
         while (step < steps) {
             int side = MathUtils.random(1, 4);
@@ -165,7 +129,6 @@ public class FourByFour {
                     right = true;
                     break;
             }
-            Gdx.app.debug("F" + f, "3");
 
 
             if (up && down && left && right) {
@@ -175,24 +138,20 @@ public class FourByFour {
                     Field = MathUtils.random(0, 15);
                     steps = 6;
                     step = 0;
-                    lastField = 0;
                     up = false;
                     down = false;
                     left = false;
                     right = false;
                     fm = new int[steps];
-                    Gdx.app.debug("F" + f, "4");
-                    Gdx.app.debug("ttttttttttttttttttttttttttttttttttttttttttttttttttt", "   " + Field);
                     Field = random(f, Field);
+                    lastField = Field;
+                    fm[step] = Field;
+                    step++;
                     if (restart2) {
-                        Gdx.app.debug("F" + f, "1");
                         step = steps;
                         restart = true;
                     }
-                    Gdx.app.debug("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy", "   " + Field);
-                    Gdx.app.debug("F" + f, "5");
                 } else {
-                    Gdx.app.debug("F" + f, "6");
                     int[] fmf = new int[step];
                     for (int i = 0; i < fm.length; i++) {
                         if (step > i)
@@ -200,11 +159,9 @@ public class FourByFour {
                     }
                     fm = fmf;
                     step = steps;
-                    Gdx.app.debug("F" + f, "7");
                 }
             } else if (lastField == Field || sameField(f, fm, Field, step)) {
                 Field = lastField;
-                Gdx.app.debug("F" + f, "8");
 
             } else {
                 up = false;
@@ -212,7 +169,6 @@ public class FourByFour {
                 left = false;
                 right = false;
                 int wrongField = 0;
-                Gdx.app.debug("F" + f, "9");
 
                 for (int i = 0; i < step; i++) {
                     if (Field - 1 == fm[i]) {
@@ -232,34 +188,24 @@ public class FourByFour {
                             wrongField++;
                     }
                 }
-                Gdx.app.debug("F" + f, "10");
 
                 if (wrongField == 2) {
                     step--;
                     Field = lastField;
-                    /// tu może zmienić coś
                     restarts++;
                 }
-                Gdx.app.debug("F" + f, "11");
 
                 lastField = Field;
 
                 fm[step] = Field;
 
                 step++;
-                Gdx.app.debug("F" + f, "12");
             }
-            Gdx.app.debug("F" + f, "13");
-            if (restarts == 40) {
-                Gdx.app.debug("gggggggggggggggggggggggggggggggggggggggggggggggg", "gggggggggggggggggggggggggggggggggggggggggggggggggggggggg     " + f);
+            if (restarts == 80) {
                 step = steps;
-                Gdx.app.debug("F" + f, "14");
                 restart = true;
-                Gdx.app.debug("F" + f, "15");
             }
-            Gdx.app.debug("F" + f, "16");
         }
-        Gdx.app.debug("F" + f, "17");
         return fm;
     }
 
@@ -345,37 +291,39 @@ public class FourByFour {
         }
     }
 
+
     private int random(int f, int Field) {
-        Gdx.app.debug("R", "1");
-        int restarts = 0;
         restart2 = false;
-        Gdx.app.debug("R", "2");
         if (f == 2) {
             for (int i = 0; i < f1.length; i++)
                 if (Field == f1[i]) {
                     Field = MathUtils.random(0, 15);
-                    i = 0;
+                    i = -1;
                 }
         }
-        Gdx.app.debug("R", "3");
         if (f == 3) {
+            Field = 0;
             for (int i = 0; i < f1.length; i++)
                 for (int k = 0; k < f2.length; k++)
-                    if (Field == f2[k] || Field == f1[i]) {
-                        Field = MathUtils.random(0, 15);
-                        k = 0;
-                        i = 0;
+                    if (Field == f1[i] || Field == f2[k]) {
+                        if (Field >= 15) {
+                            restart2 = true;
+                            i = f1.length;
+                            k = f2.length;
+                        } else {
+                            k = 0;
+                            i = 0;
+                        }
+                        Field++;
                     }
         }
-        Gdx.app.debug("R", "4");
         if (f == 4) {
+            Field = 0;
             for (int i = 0; i < f1.length; i++)
                 for (int k = 0; k < f2.length; k++)
                     for (int l = 0; l < f3.length; l++)
                         if (Field == f1[i] || Field == f2[k] || Field == f3[l]) {
-                            Field = MathUtils.random(0, 15);
-                            restarts++;
-                            if (restarts == 60) {
+                            if (Field >= 15) {
                                 restart2 = true;
                                 i = f1.length;
                                 k = f2.length;
@@ -385,10 +333,12 @@ public class FourByFour {
                                 i = 0;
                                 l = 0;
                             }
+                            Field++;
                         }
         }
         return Field;
     }
+
 
     private boolean sameField(int f, int[] fm, int Field, int step) {
         boolean sameField = false;
@@ -397,11 +347,12 @@ public class FourByFour {
                 sameField = true;
                 break;
             }
-        for (int j : f1)
-            if (Field == j) {
-                sameField = true;
-                break;
-            }
+        if (f >= 2)
+            for (int j : f1)
+                if (Field == j) {
+                    sameField = true;
+                    break;
+                }
         if (f >= 3)
             for (int j : f2)
                 if (Field == j) {
@@ -415,5 +366,38 @@ public class FourByFour {
                     break;
                 }
         return sameField;
+    }
+
+    private void around(int field) {
+        int a = 0;
+        for (int u = 1; u < 5; u++) {
+            int[] fm = new int[6];
+            switch (u) {
+                case 1:
+                    fm = f1;
+                    break;
+                case 2:
+                    fm = f2;
+                    break;
+                case 3:
+                    fm = f3;
+                    break;
+                case 4:
+                    fm = f4;
+                    break;
+            }
+
+            for (int j : fm)
+                for (int i = 1; i < 6; i++)
+                    if (i != 2) {
+                        if (field + i == j)
+                            a++;
+                        if (field - i == j)
+                            a++;
+                    }
+            if (a >= 5) {
+                restart = true;
+            }
+        }
     }
 }

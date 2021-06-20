@@ -75,8 +75,8 @@ public class MenuScreen {
         buttonStart.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                table.setVisible(false);
-                background.setVisible(false);
+                stage.clear();
+                backgroundStage.clear();
                 start = true;
                 AudioManager.instance.play(startLevelS);
             }
@@ -147,7 +147,7 @@ public class MenuScreen {
                 background.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
-                        tableMenu(background, labelTable, statsTable);
+                        tableMenu(statsTable);
                         hideStatistics = true;
                     }
                 });
@@ -184,12 +184,12 @@ public class MenuScreen {
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                if (!hideStatistics) tableMenu(background, labelTable, statsTable);
+                if (!hideStatistics) tableMenu(statsTable);
             }
         }, delay);
     }
 
-    private void tableMenu(final Image background, final Table labelTable, final Table statsTable) {
+    private void tableMenu(final Table statsTable) {
         Gdx.input.setInputProcessor(stage);
 
         final Table table = new Table();
@@ -201,9 +201,8 @@ public class MenuScreen {
             buttonNextLevel.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    background.setVisible(false);
-                    labelTable.setVisible(false);
-                    table.setVisible(false);
+                    backgroundStage.clear();
+                    stage.clear();
                     AudioManager.instance.play(startLevelS);
                 }
             });
@@ -214,9 +213,8 @@ public class MenuScreen {
         buttonReplay.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                background.setVisible(false);
-                labelTable.setVisible(false);
-                table.setVisible(false);
+                backgroundStage.clear();
+                stage.clear();
             }
         });
 
@@ -224,9 +222,8 @@ public class MenuScreen {
         buttonHome.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                background.setVisible(false);
-                labelTable.setVisible(false);
-                table.setVisible(false);
+                backgroundStage.clear();
+                stage.clear();
                 setupMenu();
             }
         });
