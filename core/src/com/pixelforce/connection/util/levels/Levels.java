@@ -55,7 +55,7 @@ public class Levels {
                     break;
                 case 3:
                     timer = 20;
-                    rounds = 1;
+                    rounds = 2;
                     levelName = "SixBySix";
                     break;
                 case 4:

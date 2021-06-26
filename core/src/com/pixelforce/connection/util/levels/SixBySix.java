@@ -1,5 +1,6 @@
 package com.pixelforce.connection.util.levels;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.pixelforce.connection.screens.game.Fields;
@@ -11,9 +12,14 @@ public class SixBySix {
     int[] f4 = new int[10];
     int[] f5 = new int[10];
 
+    int fff = 0;
+    int fff2 = 0;
+
     boolean restart = false;
 
     public void create(Fields fields, Image[] field, boolean reset) {
+        fff++;
+        Gdx.app.debug("", "HHHHuuuuuHHHH" + fff);
         if (reset) {
             f1 = genr();
 
@@ -27,29 +33,30 @@ public class SixBySix {
 
             f5 = genr(5);
             restart(fields, field);
-        }
 
 
-        int emptyFields = 0;
-        for (int i = 0; i < 36; i++) {
-            field[i].setVisible(true);
-            int emptyField = 0;
-            for (int j : f1) if (i != j) emptyField++;
-            for (int j : f2) if (i != j) emptyField++;
-            for (int j : f3) if (i != j) emptyField++;
-            for (int j : f4) if (i != j) emptyField++;
-            for (int j : f5) if (i != j) emptyField++;
+            int emptyFields = 0;
+            for (int i = 0; i < 36; i++) {
+                field[i].setVisible(true);
+                int emptyField = 0;
+                for (int j : f1) if (i != j) emptyField++;
+                for (int j : f2) if (i != j) emptyField++;
+                for (int j : f3) if (i != j) emptyField++;
+                for (int j : f4) if (i != j) emptyField++;
+                for (int j : f5) if (i != j) emptyField++;
 
-            int all = f1.length + f2.length + f3.length + f4.length + f5.length;
-            if (all == emptyField) {
-                emptyFields++;
+                int all = f1.length + f2.length + f3.length + f4.length + f5.length;
+                if (all == emptyField) {
+                    emptyFields++;
+                    around(i);
+                }
             }
-        }
-        if (reset) {
-            if (emptyFields >= 3) {
+            if (emptyFields >= 6 || restart) {
+                if (restart) restart = false;
                 create(fields, field, true);
             }
         }
+
 
         fields.reset();
         for (int i = 0; i < 36; i++)
@@ -90,15 +97,19 @@ public class SixBySix {
     private int[] genr(int f) {
         int restarts = 0;
         int Field = MathUtils.random(0, 35);
-        int steps = MathUtils.random(6, 11);
+        int steps = MathUtils.random(9, 11);
         int step = 0;
-        int lastField = 0;
         boolean up = false;
         boolean down = false;
         boolean left = false;
         boolean right = false;
         int[] fm = new int[steps];
-        random(f, Field);
+        Field = random(f, Field);
+        int lastField = Field;
+        fm[step] = Field;
+        step++;
+        if (restart)
+            step = steps;
 
         while (step < steps) {
             int side = MathUtils.random(1, 4);
@@ -135,15 +146,19 @@ public class SixBySix {
                 if (4 >= step) {
                     restarts++;
                     Field = MathUtils.random(0, 35);
-                    steps = MathUtils.random(6, 11);
+                    steps = MathUtils.random(9, 11);
                     step = 0;
-                    lastField = 0;
                     up = false;
                     down = false;
                     left = false;
                     right = false;
                     fm = new int[steps];
-                    random(f, Field);
+                    Field = random(f, Field);
+                    lastField = Field;
+                    fm[step] = Field;
+                    step++;
+                    if (restart)
+                        step = steps;
                 } else {
                     int[] fmf = new int[step];
                     for (int i = 0; i < fm.length; i++) {
@@ -183,12 +198,16 @@ public class SixBySix {
                 }
 
                 if (wrongField == 2) {
-                    step = 0;
-                    up = false;
-                    down = false;
-                    left = false;
-                    right = false;
                     restarts++;
+                    Field = MathUtils.random(0, 35);
+                    steps = MathUtils.random(9, 11);
+                    step = 0;
+                    fm = new int[steps];
+                    Field = random(f, Field);
+                    fm[step] = Field;
+                    step++;
+                    if (restart)
+                        step = steps;
                 }
 
                 lastField = Field;
@@ -198,17 +217,18 @@ public class SixBySix {
                 step++;
             }
             if (restarts == 800) {
+                fff2++;
+                Gdx.app.debug("", "IIIooooIII" + fff2);
                 step = steps;
                 restart = true;
             }
         }
-
         return fm;
     }
 
     private int[] genr() {
         int Field = MathUtils.random(0, 35);
-        int steps = MathUtils.random(7, 11);
+        int steps = MathUtils.random(9, 11);
         int step = 0;
         int lastField = 0;
         int[] fm = new int[steps];
@@ -287,47 +307,77 @@ public class SixBySix {
         }
     }
 
-    private void random(int f, int Field) {
+    private int random(int f, int Field) {
         if (f == 2) {
             for (int i = 0; i < f1.length; i++)
                 if (Field == f1[i]) {
                     Field = MathUtils.random(0, 35);
-                    i = 0;
+                    i = -1;
                 }
         }
         if (f == 3) {
+            Field = 0;
             for (int i = 0; i < f1.length; i++)
                 for (int k = 0; k < f2.length; k++)
-                    if (Field == f2[k] || Field == f1[i]) {
-                        Field = MathUtils.random(0, 35);
-                        k = 0;
-                        i = 0;
+                    if (Field == f1[i] || Field == f2[k]) {
+                        if (Field >= 35) {
+                            restart = true;
+                            i = f1.length;
+                            k = f2.length;
+                        } else {
+                            k = 0;
+                            i = 0;
+                        }
+                        Field++;
                     }
         }
         if (f == 4) {
+            Field = 0;
             for (int i = 0; i < f1.length; i++)
                 for (int k = 0; k < f2.length; k++)
                     for (int l = 0; l < f3.length; l++)
                         if (Field == f1[i] || Field == f2[k] || Field == f3[l]) {
-                            Field = MathUtils.random(0, 35);
-                            k = 0;
-                            i = 0;
-                            l = 0;
+                            if (Field >= 35) {
+                                restart = true;
+                                i = f1.length;
+                                k = f2.length;
+                                l = f3.length;
+                            } else {
+                                k = 0;
+                                i = 0;
+                                l = 0;
+                            }
+                            Field++;
                         }
         }
+
+
+        // tutaj dodałem inne losownie ale nie wiem czy to pomogło
+
+
         if (f == 5) {
+            Field = 0;
             for (int i = 0; i < f1.length; i++)
                 for (int k = 0; k < f2.length; k++)
                     for (int l = 0; l < f3.length; l++)
                         for (int u = 0; u < f4.length; u++)
                             if (Field == f1[i] || Field == f2[k] || Field == f3[l] || Field == f4[u]) {
-                                Field = MathUtils.random(0, 35);
-                                k = 0;
-                                i = 0;
-                                l = 0;
-                                u = 0;
+                                if (Field >= 35) {
+                                    restart = true;
+                                    i = f1.length;
+                                    k = f2.length;
+                                    l = f3.length;
+                                    u = f4.length;
+                                } else {
+                                    k = 0;
+                                    i = 0;
+                                    l = 0;
+                                    u = 0;
+                                }
+                                Field++;
                             }
         }
+        return Field;
     }
 
     private boolean sameField(int f, int[] fm, int Field, int step) {
@@ -337,11 +387,12 @@ public class SixBySix {
                 sameField = true;
                 break;
             }
-        for (int j : f1)
-            if (Field == j) {
-                sameField = true;
-                break;
-            }
+        if (f >= 2)
+            for (int j : f1)
+                if (Field == j) {
+                    sameField = true;
+                    break;
+                }
         if (f >= 3)
             for (int j : f2)
                 if (Field == j) {
@@ -361,5 +412,42 @@ public class SixBySix {
                     break;
                 }
         return sameField;
+    }
+
+    private void around(int field) {
+        for (int u = 1; u < 6; u++) {
+            int[] fm = new int[6];
+            int a = 0;
+            switch (u) {
+                case 1:
+                    fm = f1;
+                    break;
+                case 2:
+                    fm = f2;
+                    break;
+                case 3:
+                    fm = f3;
+                    break;
+                case 4:
+                    fm = f4;
+                    break;
+                case 5:
+                    fm = f5;
+                    break;
+            }
+
+            for (int j : fm)
+                for (int i = 4; i < 8; i++) {
+                    if (i == 4) i = 1;
+                    if (field + i == j)
+                        a++;
+                    if (field - i == j)
+                        a++;
+                    if (i == 1) i = 4;
+                }
+            if (a >= 6) {
+                restart = true;
+            }
+        }
     }
 }

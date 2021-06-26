@@ -11,7 +11,6 @@ public class FourByFour {
     int[] f4 = new int[10];
 
     boolean restart = false;
-    boolean restart2 = false;
 
     public void create(Fields fields, Image[] field, boolean reset) {
         if (reset) {
@@ -46,8 +45,6 @@ public class FourByFour {
                 create(fields, field, true);
             }
         }
-
-
 
         fields.reset();
         for (int i = 0; i < 16; i++)
@@ -95,10 +92,9 @@ public class FourByFour {
         int lastField = Field;
         fm[step] = Field;
         step++;
-        if (restart2) {
+        if (restart)
             step = steps;
-            restart = true;
-        }
+
 
         while (step < steps) {
             int side = MathUtils.random(1, 4);
@@ -147,10 +143,8 @@ public class FourByFour {
                     lastField = Field;
                     fm[step] = Field;
                     step++;
-                    if (restart2) {
+                    if (restart)
                         step = steps;
-                        restart = true;
-                    }
                 } else {
                     int[] fmf = new int[step];
                     for (int i = 0; i < fm.length; i++) {
@@ -293,7 +287,6 @@ public class FourByFour {
 
 
     private int random(int f, int Field) {
-        restart2 = false;
         if (f == 2) {
             for (int i = 0; i < f1.length; i++)
                 if (Field == f1[i]) {
@@ -307,7 +300,7 @@ public class FourByFour {
                 for (int k = 0; k < f2.length; k++)
                     if (Field == f1[i] || Field == f2[k]) {
                         if (Field >= 15) {
-                            restart2 = true;
+                            restart = true;
                             i = f1.length;
                             k = f2.length;
                         } else {
@@ -324,7 +317,7 @@ public class FourByFour {
                     for (int l = 0; l < f3.length; l++)
                         if (Field == f1[i] || Field == f2[k] || Field == f3[l]) {
                             if (Field >= 15) {
-                                restart2 = true;
+                                restart = true;
                                 i = f1.length;
                                 k = f2.length;
                                 l = f3.length;
@@ -369,9 +362,9 @@ public class FourByFour {
     }
 
     private void around(int field) {
-        int a = 0;
         for (int u = 1; u < 5; u++) {
             int[] fm = new int[6];
+            int a = 0;
             switch (u) {
                 case 1:
                     fm = f1;
