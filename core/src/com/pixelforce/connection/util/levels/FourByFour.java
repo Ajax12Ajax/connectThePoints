@@ -128,7 +128,7 @@ public class FourByFour {
 
 
             if (up && down && left && right) {
-                if (2 >= step) {
+                if (step <= 2) {
                     restarts++;
                     restarts++;
                     Field = MathUtils.random(0, 15);

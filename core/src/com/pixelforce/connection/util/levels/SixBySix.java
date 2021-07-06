@@ -18,8 +18,9 @@ public class SixBySix {
     boolean restart = false;
 
     public void create(Fields fields, Image[] field, boolean reset) {
-        fff++;
-        Gdx.app.debug("", "HHHHuuuuuHHHH" + fff);
+        fff = 0;
+        fff2 = 0;
+
         if (reset) {
             f1 = genr();
 
@@ -143,8 +144,10 @@ public class SixBySix {
 
 
             if (up && down && left && right) {
-                if (4 >= step) {
+                if (step <= 3) {
                     restarts++;
+                    fff++;
+                    Gdx.app.debug("", "HHHHuuuuuHHHH" + fff);
                     Field = MathUtils.random(0, 35);
                     steps = MathUtils.random(9, 11);
                     step = 0;
@@ -199,6 +202,8 @@ public class SixBySix {
 
                 if (wrongField == 2) {
                     restarts++;
+                    fff2++;
+                    Gdx.app.debug("", "IIIooooIII" + fff2);
                     Field = MathUtils.random(0, 35);
                     steps = MathUtils.random(9, 11);
                     step = 0;
@@ -217,8 +222,6 @@ public class SixBySix {
                 step++;
             }
             if (restarts == 800) {
-                fff2++;
-                Gdx.app.debug("", "IIIooooIII" + fff2);
                 step = steps;
                 restart = true;
             }
@@ -312,69 +315,40 @@ public class SixBySix {
             for (int i = 0; i < f1.length; i++)
                 if (Field == f1[i]) {
                     Field = MathUtils.random(0, 35);
-                    i = -1;
+                    i = 0;
                 }
         }
         if (f == 3) {
-            Field = 0;
             for (int i = 0; i < f1.length; i++)
                 for (int k = 0; k < f2.length; k++)
                     if (Field == f1[i] || Field == f2[k]) {
-                        if (Field >= 35) {
-                            restart = true;
-                            i = f1.length;
-                            k = f2.length;
-                        } else {
-                            k = 0;
-                            i = 0;
-                        }
-                        Field++;
+                        Field = MathUtils.random(0, 35);
+                        k = 0;
+                        i = 0;
                     }
         }
         if (f == 4) {
-            Field = 0;
             for (int i = 0; i < f1.length; i++)
                 for (int k = 0; k < f2.length; k++)
                     for (int l = 0; l < f3.length; l++)
                         if (Field == f1[i] || Field == f2[k] || Field == f3[l]) {
-                            if (Field >= 35) {
-                                restart = true;
-                                i = f1.length;
-                                k = f2.length;
-                                l = f3.length;
-                            } else {
-                                k = 0;
-                                i = 0;
-                                l = 0;
-                            }
-                            Field++;
+                            Field = MathUtils.random(0, 35);
+                            k = 0;
+                            i = 0;
+                            l = 0;
                         }
         }
-
-
-        // tutaj dodałem inne losownie ale nie wiem czy to pomogło
-
-
         if (f == 5) {
-            Field = 0;
             for (int i = 0; i < f1.length; i++)
                 for (int k = 0; k < f2.length; k++)
                     for (int l = 0; l < f3.length; l++)
                         for (int u = 0; u < f4.length; u++)
                             if (Field == f1[i] || Field == f2[k] || Field == f3[l] || Field == f4[u]) {
-                                if (Field >= 35) {
-                                    restart = true;
-                                    i = f1.length;
-                                    k = f2.length;
-                                    l = f3.length;
-                                    u = f4.length;
-                                } else {
-                                    k = 0;
-                                    i = 0;
-                                    l = 0;
-                                    u = 0;
-                                }
-                                Field++;
+                                Field = MathUtils.random(0, 35);
+                                k = 0;
+                                i = 0;
+                                l = 0;
+                                u = 0;
                             }
         }
         return Field;
@@ -445,7 +419,7 @@ public class SixBySix {
                         a++;
                     if (i == 1) i = 4;
                 }
-            if (a >= 6) {
+            if (a >= 5) {
                 restart = true;
             }
         }
