@@ -45,17 +45,17 @@ public class Levels {
             switch (prefs.level) {
                 case 1:
                     timer = 27;
-                    rounds = 2;
+                    rounds = 3;
                     levelName = "FiveByFive";
                     break;
                 case 2:
                     timer = 21;
-                    rounds = 4;
+                    rounds = 3;
                     levelName = "FourByFour";
                     break;
                 case 3:
                     timer = 20;
-                    rounds = 2;
+                    rounds = 3;
                     levelName = "SixBySix";
                     break;
                 case 4:

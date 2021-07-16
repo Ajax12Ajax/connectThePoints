@@ -1,9 +1,6 @@
 package com.pixelforce.connection.util.levels;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.pixelforce.connection.screens.game.Fields;
 
 public class SixBySix {
     int[] f1 = new int[10];
@@ -12,86 +9,110 @@ public class SixBySix {
     int[] f4 = new int[10];
     int[] f5 = new int[10];
 
-    int fff = 0;
-    int fff2 = 0;
+    public int[] Round1 = new int[10];
+    public int[] Round2 = new int[10];
+    public int[] Round3 = new int[10];
+    public int[] Round4 = new int[10];
+    public int[] Round5 = new int[10];
+
+    int[] finalFields = new int[10];
 
     boolean restart = false;
 
-    public void create(Fields fields, Image[] field, boolean reset) {
-        fff = 0;
-        fff2 = 0;
 
-        if (reset) {
-            f1 = genr();
+    public void create() {
+        System.arraycopy(generating(), 0, Round1, 0, 10);
+        System.arraycopy(generating(), 0, Round2, 0, 10);
+        System.arraycopy(generating(), 0, Round3, 0, 10);
+        System.arraycopy(generating(), 0, Round4, 0, 10);
+        System.arraycopy(generating(), 0, Round5, 0, 10);
+    }
 
-            f2 = genr(2);
+    public int[] pick(int round){
+        int[] Round = new int[10];
+        switch (round) {
+            case 0:
+                Round = Round1;
+                break;
+            case 1:
+                Round = Round2;
+                break;
+            case 2:
+                Round = Round3;
+                break;
+            case 3:
+                Round = Round4;
+                break;
+            case 4:
+                Round = Round5;
+                break;
+        }
+        return Round;
+    }
 
-            f3 = genr(3);
-            restart(fields, field);
 
-            f4 = genr(4);
-            restart(fields, field);
+    public int[] generating() {
+        f1 = genr();
 
-            f5 = genr(5);
-            restart(fields, field);
+        f2 = genr(2);
+
+        f3 = genr(3);
+        restart();
+
+        f4 = genr(4);
+        restart();
+
+        f5 = genr(5);
+        restart();
 
 
-            int emptyFields = 0;
-            for (int i = 0; i < 36; i++) {
-                field[i].setVisible(true);
-                int emptyField = 0;
-                for (int j : f1) if (i != j) emptyField++;
-                for (int j : f2) if (i != j) emptyField++;
-                for (int j : f3) if (i != j) emptyField++;
-                for (int j : f4) if (i != j) emptyField++;
-                for (int j : f5) if (i != j) emptyField++;
+        int emptyFields = 0;
+        for (int i = 0; i < 36; i++) {
+            int emptyField = 0;
+            for (int j : f1) if (i != j) emptyField++;
+            for (int j : f2) if (i != j) emptyField++;
+            for (int j : f3) if (i != j) emptyField++;
+            for (int j : f4) if (i != j) emptyField++;
+            for (int j : f5) if (i != j) emptyField++;
 
-                int all = f1.length + f2.length + f3.length + f4.length + f5.length;
-                if (all == emptyField) {
-                    emptyFields++;
-                    around(i);
-                }
+            int all = f1.length + f2.length + f3.length + f4.length + f5.length;
+            if (all == emptyField) {
+                emptyFields++;
+                around(i);
             }
-            if (emptyFields >= 6 || restart) {
-                if (restart) restart = false;
-                create(fields, field, true);
-            }
+        }
+        if (emptyFields >= 6 || restart) {
+            if (restart) restart = false;
+            generating();
         }
 
 
-        fields.reset();
-        for (int i = 0; i < 36; i++)
-            fields.setCheck(i, field[i], true, "Check0");
-
+        int gg = 0;
         for (int i = 0; i < 5; i++) {
-            String color = "Check1";
             int[] fm = f1;
 
             switch (i) {
                 case 1:
-                    color = "Check2";
                     fm = f2;
                     break;
                 case 2:
-                    color = "Check3";
                     fm = f3;
                     break;
                 case 3:
-                    color = "Check4";
                     fm = f4;
                     break;
                 case 4:
-                    color = "Check5";
                     fm = f5;
                     break;
             }
-            for (int t = 0; t < 2; t++) {
+            for (int t = 1; t <= 2; t++) {
                 int ff = fm[0];
-                if (t == 1) ff = fm[fm.length - 1];
-                fields.setStartingField(ff);
-                fields.setCheck(ff, field[ff], true, color);
+                if (t == 2) ff = fm[fm.length - 1];
+                finalFields[gg] = ff;
+                gg++;
             }
         }
+        return finalFields;
     }
 
 
@@ -146,8 +167,6 @@ public class SixBySix {
             if (up && down && left && right) {
                 if (step <= 3) {
                     restarts++;
-                    fff++;
-                    Gdx.app.debug("", "HHHHuuuuuHHHH" + fff);
                     Field = MathUtils.random(0, 35);
                     steps = MathUtils.random(9, 11);
                     step = 0;
@@ -202,8 +221,6 @@ public class SixBySix {
 
                 if (wrongField == 2) {
                     restarts++;
-                    fff2++;
-                    Gdx.app.debug("", "IIIooooIII" + fff2);
                     Field = MathUtils.random(0, 35);
                     steps = MathUtils.random(9, 11);
                     step = 0;
@@ -303,10 +320,10 @@ public class SixBySix {
         return fm;
     }
 
-    private void restart(Fields fields, Image[] field) {
+    private void restart() {
         if (restart) {
             restart = false;
-            create(fields, field, true);
+            generating();
         }
     }
 
@@ -315,7 +332,7 @@ public class SixBySix {
             for (int i = 0; i < f1.length; i++)
                 if (Field == f1[i]) {
                     Field = MathUtils.random(0, 35);
-                    i = 0;
+                    i = -1;
                 }
         }
         if (f == 3) {

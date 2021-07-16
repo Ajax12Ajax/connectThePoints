@@ -28,7 +28,8 @@ public class MainScreen extends AbstractGameScreen {
         levels = new Levels();
         Gdx.input.setCatchKey(Input.Keys.BACK, true);
 
-        game.setupGame(true);
+        game.setupGame(true, true, false);
+
         menuScreen.setupMenu();
     }
 
@@ -56,9 +57,8 @@ public class MainScreen extends AbstractGameScreen {
                         prefs.save();
                         game.stage.clear();
                         levels.Level();
-                        game.setupGame(true);
+                        game.setupGame(true, true, false);
                         menuScreen.start = true;
-                        game.milliseconds = 0;
                     }
                 });
             }
@@ -66,9 +66,8 @@ public class MainScreen extends AbstractGameScreen {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     game.stage.clear();
-                    game.setupGame(true);
+                    game.setupGame(true, true, false);
                     menuScreen.start = true;
-                    game.milliseconds = 0;
                 }
             });
             menuScreen.buttonHome.addListener(new ClickListener() {
@@ -81,8 +80,7 @@ public class MainScreen extends AbstractGameScreen {
                     }
                     game.stage.clear();
                     levels.Level();
-                    game.setupGame(true);
-                    game.milliseconds = 0;
+                    game.setupGame(true, true, false);
                 }
             });
             game.endlevel = false;

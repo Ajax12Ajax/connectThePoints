@@ -91,7 +91,6 @@ public class MenuScreen {
             }
         });
 
-
         buttonAction(table, 0.35f);
         stage.addActor(table);
     }
