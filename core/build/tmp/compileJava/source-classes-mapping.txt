@@ -9,24 +9,18 @@ com/pixelforce/connection/util/Preferences.java
  com.pixelforce.connection.util.Preferences
 com/pixelforce/connection/screens/game/Fields.java
  com.pixelforce.connection.screens.game.Fields
-com/pixelforce/connection/util/levels/FourByFour.java
- com.pixelforce.connection.util.levels.FourByFour
-com/pixelforce/connection/util/AudioManager.java
- com.pixelforce.connection.util.AudioManager
-com/pixelforce/connection/MyGdxGame.java
- com.pixelforce.connection.MyGdxGame
-com/pixelforce/connection/screens/AbstractGameScreen.java
- com.pixelforce.connection.screens.AbstractGameScreen
-com/pixelforce/connection/util/levels/SixBySix.java
- com.pixelforce.connection.util.levels.SixBySix
-com/pixelforce/connection/util/levels/Levels.java
- com.pixelforce.connection.util.levels.Levels
 com/pixelforce/connection/screens/MainScreen.java
  com.pixelforce.connection.screens.MainScreen
  com.pixelforce.connection.screens.MainScreen$1
  com.pixelforce.connection.screens.MainScreen$2
  com.pixelforce.connection.screens.MainScreen$3
  com.pixelforce.connection.screens.MainScreen$4
+com/pixelforce/connection/util/AudioManager.java
+ com.pixelforce.connection.util.AudioManager
+com/pixelforce/connection/MyGdxGame.java
+ com.pixelforce.connection.MyGdxGame
+com/pixelforce/connection/screens/AbstractGameScreen.java
+ com.pixelforce.connection.screens.AbstractGameScreen
 com/pixelforce/connection/screens/MenuScreen.java
  com.pixelforce.connection.screens.MenuScreen
  com.pixelforce.connection.screens.MenuScreen$1
@@ -38,9 +32,15 @@ com/pixelforce/connection/screens/MenuScreen.java
  com.pixelforce.connection.screens.MenuScreen$6
  com.pixelforce.connection.screens.MenuScreen$7
  com.pixelforce.connection.screens.MenuScreen$8
+com/pixelforce/connection/util/levels/Levels.java
+ com.pixelforce.connection.util.levels.Levels
+com/pixelforce/connection/util/levels/SixBySix.java
+ com.pixelforce.connection.util.levels.SixBySix
 com/pixelforce/connection/screens/game/Game.java
  com.pixelforce.connection.screens.game.Game
  com.pixelforce.connection.screens.game.Game$1
  com.pixelforce.connection.screens.game.Game$2
 com/pixelforce/connection/util/levels/FiveByFive.java
  com.pixelforce.connection.util.levels.FiveByFive
+com/pixelforce/connection/util/levels/FourByFour.java
+ com.pixelforce.connection.util.levels.FourByFour

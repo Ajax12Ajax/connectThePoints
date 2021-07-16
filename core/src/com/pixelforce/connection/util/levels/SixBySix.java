@@ -28,7 +28,7 @@ public class SixBySix {
         System.arraycopy(generating(), 0, Round5, 0, 10);
     }
 
-    public int[] pick(int round){
+    public int[] pick(int round) {
         int[] Round = new int[10];
         switch (round) {
             case 0:
@@ -138,27 +138,23 @@ public class SixBySix {
 
             switch (side) {
                 case 1:
-                    if (Field - 6 >= 0) {
+                    if (Field - 6 >= 0)
                         Field = Field - 6;
-                    }
                     up = true;
                     break;
                 case 2:
-                    if (Field - 1 >= 0 && Field != 6 && Field != 12 && Field != 18 && Field != 24 && Field != 30) {
+                    if (Field - 1 >= 0 && Field != 6 && Field != 12 && Field != 18 && Field != 24 && Field != 30)
                         Field = Field - 1;
-                    }
                     left = true;
                     break;
                 case 3:
-                    if (Field + 6 <= 35) {
+                    if (Field + 6 <= 35)
                         Field = Field + 6;
-                    }
                     down = true;
                     break;
                 case 4:
-                    if (Field + 1 <= 35 && Field != 5 && Field != 11 && Field != 17 && Field != 23 && Field != 29) {
+                    if (Field + 1 <= 35 && Field != 5 && Field != 11 && Field != 17 && Field != 23 && Field != 29)
                         Field = Field + 1;
-                    }
                     right = true;
                     break;
             }
@@ -257,34 +253,30 @@ public class SixBySix {
             int side = MathUtils.random(1, 4);
             switch (side) {
                 case 1:
-                    if (Field - 6 >= 0) {
+                    if (Field - 6 >= 0)
                         Field = Field - 6;
-                    }
                     break;
                 case 2:
-                    if (Field - 1 >= 0 && Field != 6 && Field != 12 && Field != 18 && Field != 24 && Field != 30) {
+                    if (Field - 1 >= 0 && Field != 6 && Field != 12 && Field != 18 && Field != 24 && Field != 30)
                         Field = Field - 1;
-                    }
                     break;
                 case 3:
-                    if (Field + 6 <= 35) {
+                    if (Field + 6 <= 35)
                         Field = Field + 6;
-                    }
                     break;
                 case 4:
-                    if (Field + 1 <= 35 && Field != 5 && Field != 11 && Field != 17 && Field != 23 && Field != 29) {
+                    if (Field + 1 <= 35 && Field != 5 && Field != 11 && Field != 17 && Field != 23 && Field != 29)
                         Field = Field + 1;
-                    }
                     break;
             }
 
             boolean sameField = false;
-            for (int i = 0; i < step; i++) {
+            for (int i = 0; i < step; i++)
                 if (fm[i] == Field) {
                     sameField = true;
                     break;
                 }
-            }
+
 
             if (lastField == Field || sameField) {
                 Field = lastField;

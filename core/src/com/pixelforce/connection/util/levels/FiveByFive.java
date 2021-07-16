@@ -26,6 +26,7 @@ public class FiveByFive {
         System.arraycopy(generating(), 0, Round3, 0, 10);
         System.arraycopy(generating(), 0, Round4, 0, 10);
         System.arraycopy(generating(), 0, Round5, 0, 10);
+
     }
 
     public int[] pick(int round) {
@@ -88,10 +89,12 @@ public class FiveByFive {
             if (emptyFields <= 2 || emptyFields >= 5)
                 generating();
         } else {
-            if (MathUtils.randomBoolean())
-                if (emptyFields > 2)
+            if (MathUtils.randomBoolean() || restart) {
+                if (emptyFields > 2 || restart) {
+                    if (restart) restart = false;
                     generating();
-            if (emptyFields >= 5)
+                }
+            } else if (emptyFields >= 4)
                 generating();
         }
 
@@ -130,58 +133,62 @@ public class FiveByFive {
         int Field = MathUtils.random(0, 24);
         int steps = MathUtils.random(4, 7);
         int step = 0;
-        int lastField = 0;
         boolean up = false;
         boolean down = false;
         boolean left = false;
         boolean right = false;
         int[] fm = new int[steps];
-        random(f, Field);
+        Field = random(f, Field);
+        int lastField = Field;
+        fm[step] = Field;
+        step++;
+        if (restart)
+            step = steps;
 
         while (step < steps) {
             int side = MathUtils.random(1, 4);
 
             switch (side) {
                 case 1:
-                    if (Field - 5 >= 0) {
+                    if (Field - 5 >= 0)
                         Field = Field - 5;
-                    }
                     up = true;
                     break;
                 case 2:
-                    if (Field - 1 >= 0 && Field != 5 && Field != 10 && Field != 15 && Field != 20) {
+                    if (Field - 1 >= 0 && Field != 5 && Field != 10 && Field != 15 && Field != 20)
                         Field = Field - 1;
-                    }
                     left = true;
                     break;
                 case 3:
-                    if (Field + 5 <= 24) {
+                    if (Field + 5 <= 24)
                         Field = Field + 5;
-                    }
                     down = true;
                     break;
                 case 4:
-                    if (Field + 1 <= 24 && Field != 4 && Field != 9 && Field != 14 && Field != 19) {
+                    if (Field + 1 <= 24 && Field != 4 && Field != 9 && Field != 14 && Field != 19)
                         Field = Field + 1;
-                    }
                     right = true;
                     break;
             }
 
 
             if (up && down && left && right) {
-                if (min >= step) {
+                if (step <= min) {
                     restarts++;
                     Field = MathUtils.random(0, 24);
                     steps = MathUtils.random(4, 7);
                     step = 0;
-                    lastField = 0;
                     up = false;
                     down = false;
                     left = false;
                     right = false;
                     fm = new int[steps];
-                    random(f, Field);
+                    Field = random(f, Field);
+                    lastField = Field;
+                    fm[step] = Field;
+                    step++;
+                    if (restart)
+                        step = steps;
                 } else {
                     int[] fmf = new int[step];
                     for (int i = 0; i < fm.length; i++) {
@@ -221,11 +228,8 @@ public class FiveByFive {
                 }
 
                 if (wrongField == 2) {
-                    step = 0;
-                    up = false;
-                    down = false;
-                    left = false;
-                    right = false;
+                    step--;
+                    Field = lastField;
                     restarts++;
                 }
 
@@ -240,7 +244,6 @@ public class FiveByFive {
                 restart = true;
             }
         }
-
         return fm;
     }
 
@@ -255,34 +258,30 @@ public class FiveByFive {
             int side = MathUtils.random(1, 4);
             switch (side) {
                 case 1:
-                    if (Field - 5 >= 0) {
+                    if (Field - 5 >= 0)
                         Field = Field - 5;
-                    }
                     break;
                 case 2:
-                    if (Field - 1 >= 0 && Field != 5 && Field != 10 && Field != 15 && Field != 20) {
+                    if (Field - 1 >= 0 && Field != 5 && Field != 10 && Field != 15 && Field != 20)
                         Field = Field - 1;
-                    }
                     break;
                 case 3:
-                    if (Field + 5 <= 24) {
+                    if (Field + 5 <= 24)
                         Field = Field + 5;
-                    }
                     break;
                 case 4:
-                    if (Field + 1 <= 24 && Field != 4 && Field != 9 && Field != 14 && Field != 19) {
+                    if (Field + 1 <= 24 && Field != 4 && Field != 9 && Field != 14 && Field != 19)
                         Field = Field + 1;
-                    }
                     break;
             }
 
             boolean sameField = false;
-            for (int i = 0; i < step; i++) {
+            for (int i = 0; i < step; i++)
                 if (fm[i] == Field) {
                     sameField = true;
                     break;
                 }
-            }
+
 
             if (lastField == Field || sameField) {
                 Field = lastField;
@@ -326,12 +325,12 @@ public class FiveByFive {
         }
     }
 
-    private void random(int f, int Field) {
+    private int random(int f, int Field) {
         if (f == 2) {
             for (int i = 0; i < f1.length; i++)
                 if (Field == f1[i]) {
                     Field = MathUtils.random(0, 24);
-                    i = 0;
+                    i = -1;
                 }
         }
         if (f == 3) {
@@ -367,6 +366,7 @@ public class FiveByFive {
                                 u = 0;
                             }
         }
+        return Field;
     }
 
     private boolean sameField(int f, int[] fm, int Field, int step) {
@@ -376,11 +376,12 @@ public class FiveByFive {
                 sameField = true;
                 break;
             }
-        for (int j : f1)
-            if (Field == j) {
-                sameField = true;
-                break;
-            }
+        if (f >= 2)
+            for (int j : f1)
+                if (Field == j) {
+                    sameField = true;
+                    break;
+                }
         if (f >= 3)
             for (int j : f2)
                 if (Field == j) {

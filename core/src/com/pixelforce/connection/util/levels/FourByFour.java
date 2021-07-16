@@ -27,7 +27,7 @@ public class FourByFour {
         System.arraycopy(generating(), 0, Round5, 0, 8);
     }
 
-    public int[] pick(int round){
+    public int[] pick(int round) {
         int[] Round = new int[10];
         switch (round) {
             case 0:
@@ -130,27 +130,23 @@ public class FourByFour {
 
             switch (side) {
                 case 1:
-                    if (Field - 4 >= 0) {
+                    if (Field - 4 >= 0)
                         Field = Field - 4;
-                    }
                     up = true;
                     break;
                 case 2:
-                    if (Field - 1 >= 0 && Field != 4 && Field != 8 && Field != 12) {
+                    if (Field - 1 >= 0 && Field != 4 && Field != 8 && Field != 12)
                         Field = Field - 1;
-                    }
                     left = true;
                     break;
                 case 3:
-                    if (Field + 4 <= 15) {
+                    if (Field + 4 <= 15)
                         Field = Field + 4;
-                    }
                     down = true;
                     break;
                 case 4:
-                    if (Field + 1 <= 15 && Field != 3 && Field != 7 && Field != 11) {
+                    if (Field + 1 <= 15 && Field != 3 && Field != 7 && Field != 11)
                         Field = Field + 1;
-                    }
                     right = true;
                     break;
             }
@@ -243,34 +239,30 @@ public class FourByFour {
             int side = MathUtils.random(1, 4);
             switch (side) {
                 case 1:
-                    if (Field - 4 >= 0) {
+                    if (Field - 4 >= 0)
                         Field = Field - 4;
-                    }
                     break;
                 case 2:
-                    if (Field - 1 >= 0 && Field != 4 && Field != 8 && Field != 12) {
+                    if (Field - 1 >= 0 && Field != 4 && Field != 8 && Field != 12)
                         Field = Field - 1;
-                    }
                     break;
                 case 3:
-                    if (Field + 4 <= 15) {
+                    if (Field + 4 <= 15)
                         Field = Field + 4;
-                    }
                     break;
                 case 4:
-                    if (Field + 1 <= 15 && Field != 3 && Field != 7 && Field != 11) {
+                    if (Field + 1 <= 15 && Field != 3 && Field != 7 && Field != 11)
                         Field = Field + 1;
-                    }
                     break;
             }
 
             boolean sameField = false;
-            for (int i = 0; i < step; i++) {
+            for (int i = 0; i < step; i++)
                 if (fm[i] == Field) {
                     sameField = true;
                     break;
                 }
-            }
+
 
             if (lastField == Field || sameField) {
                 Field = lastField;
